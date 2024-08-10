@@ -1,0 +1,21 @@
+{
+  "name": "amarillasportbackend",
+  "version": "1.0.0",
+  "description": "backend",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "author": "juan-suarez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/juan-suarez/AmarillaSportBackend/issues"
+  },
+  "homepage": "https://github.com/juan-suarez/AmarillaSportBackend#readme",
+  "dependencies": {
+    "next": "^14.2.5",
+    "react": "^18.3.1"
+  }
+}
