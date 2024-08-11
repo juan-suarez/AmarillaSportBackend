@@ -1,6 +1,16 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, OneToMany, OneToOne, JoinColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  JoinColumn,
+} from 'typeorm';
 import { Customer } from './customer.entity';
-import { TransactionDetails } from './transaction-detail.entity';
+import { TransactionDetail } from './transaction-detail.entity';
 import { Payment } from './payment.entity';
 
 @Entity()
@@ -10,7 +20,7 @@ export class Transaction {
 
   @Column({ type: 'varchar', unique: true })
   transaction_number: string;
-  
+
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   base_fee: number;
 
@@ -23,14 +33,14 @@ export class Transaction {
   @Column({ type: 'varchar' })
   status: string;
 
-  @ManyToOne(() => Customer, customer => customer.transactions)
+  @ManyToOne(() => Customer, (customer) => customer.transactions)
   @JoinColumn()
   customer: Customer;
 
-  @OneToMany(() => TransactionDetails, transactionDetails => transactionDetails.transaction)
-  details: TransactionDetails[];
+  @OneToMany(ype => TransactionDetail, transactionDetails => transactionDetails.transaction)
+  detail: TransactionDetail[];
 
-  @OneToOne(() => Payment, payment => payment.transaction) // should be an OneToMany if we can retry the payment
+  @OneToOne(() => Payment, (payment) => payment.transaction) // should be an OneToMany if we can retry the payment
   payment: Payment;
 
   @CreateDateColumn()

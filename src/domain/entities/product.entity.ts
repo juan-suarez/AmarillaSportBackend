@@ -1,4 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn, UpdateDateColumn, CreateDateColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  OneToMany,
+} from 'typeorm';
+import { TransactionDetail } from './transaction-detail.entity';
 
 @Entity()
 export class Product {
@@ -17,7 +24,9 @@ export class Product {
   @Column('int')
   stock_quantity: number;
 
+  @OneToMany(Type => TransactionDetail, TransactionDetail => TransactionDetail.product)
+  detail: TransactionDetail
+
   @CreateDateColumn()
   created_at: Date;
-
 }

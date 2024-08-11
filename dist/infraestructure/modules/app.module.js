@@ -15,7 +15,7 @@ const customer_entity_1 = require("../../domain/entities/customer.entity");
 const payment_entity_1 = require("../../domain/entities/payment.entity");
 const product_entity_1 = require("../../domain/entities/product.entity");
 const transaction_detail_entity_1 = require("../../domain/entities/transaction-detail.entity");
-const typeorm_2 = require("typeorm");
+const transaction_entity_1 = require("../../domain/entities/transaction.entity");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -29,23 +29,9 @@ exports.AppModule = AppModule = __decorate([
                 username: process.env.POSTGRES_USER || 'user',
                 password: process.env.POSTGRES_PASSWORD || 'password',
                 database: process.env.POSTGRES_DB || 'app',
-                entities: [
-                    typeorm_2.Transaction,
-                    customer_entity_1.Customer,
-                    product_entity_1.Product,
-                    transaction_detail_entity_1.TransactionDetails,
-                    payment_entity_1.Payment,
-                ],
+                entities: [customer_entity_1.Customer, product_entity_1.Product, transaction_entity_1.Transaction, transaction_detail_entity_1.TransactionDetail, payment_entity_1.Payment],
                 synchronize: true,
-                logging: true,
             }),
-            typeorm_1.TypeOrmModule.forFeature([
-                typeorm_2.Transaction,
-                customer_entity_1.Customer,
-                product_entity_1.Product,
-                transaction_detail_entity_1.TransactionDetails,
-                payment_entity_1.Payment,
-            ]),
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

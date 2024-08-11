@@ -5,8 +5,8 @@ import { AppService } from 'src/application/services/app.service';
 import { Customer } from 'src/domain/entities/customer.entity';
 import { Payment } from 'src/domain/entities/payment.entity';
 import { Product } from 'src/domain/entities/product.entity';
-import { TransactionDetails } from 'src/domain/entities/transaction-detail.entity';
-import { Transaction } from 'typeorm';
+import { TransactionDetail } from 'src/domain/entities/transaction-detail.entity';
+import { Transaction } from 'src/domain/entities/transaction.entity';
 
 @Module({
   imports: [
@@ -17,24 +17,9 @@ import { Transaction } from 'typeorm';
       username: process.env.POSTGRES_USER || 'user',
       password: process.env.POSTGRES_PASSWORD || 'password',
       database: process.env.POSTGRES_DB || 'app',
-      entities: [
-        Transaction,
-        Customer,
-        Product,
-        TransactionDetails,
-        Payment,
-      ],
+      entities:[Customer, Product, Transaction, TransactionDetail, Payment],
       synchronize: true,
-      logging: true,
     }),
-
-    TypeOrmModule.forFeature([
-      Transaction,
-      Customer,
-      Product,
-      TransactionDetails,
-      Payment,
-    ]),
   ],
   controllers: [AppController],
   providers: [AppService],

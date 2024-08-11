@@ -1,5 +1,5 @@
 import { Customer } from './customer.entity';
-import { TransactionDetails } from './transaction-detail.entity';
+import { TransactionDetail } from './transaction-detail.entity';
 import { Payment } from './payment.entity';
 export declare class Transaction {
     id: number;
@@ -9,7 +9,7 @@ export declare class Transaction {
     total_amount: number;
     status: string;
     customer: Customer;
-    details: TransactionDetails[];
+    detail: TransactionDetail[];
     payment: Payment;
     created_at: Date;
     updated_at: Date;

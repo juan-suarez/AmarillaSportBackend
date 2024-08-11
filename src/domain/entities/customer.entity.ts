@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  OneToMany,
+} from 'typeorm';
 import { Transaction } from './transaction.entity';
 
 @Entity()
@@ -15,10 +21,9 @@ export class Customer {
   @Column({ type: 'varchar', unique: true })
   email: string;
 
-  @OneToMany(() => Transaction, transaction => transaction.customer)
+  @OneToMany(Type => Transaction, transaction => transaction.customer)
   transactions: Transaction[];
 
   @CreateDateColumn()
   created_at: Date;
-
 }

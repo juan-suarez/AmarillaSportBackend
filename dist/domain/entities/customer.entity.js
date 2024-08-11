@@ -32,7 +32,7 @@ __decorate([
     __metadata("design:type", String)
 ], Customer.prototype, "email", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => transaction_entity_1.Transaction, transaction => transaction.customer),
+    (0, typeorm_1.OneToMany)(Type => transaction_entity_1.Transaction, transaction => transaction.customer),
     __metadata("design:type", Array)
 ], Customer.prototype, "transactions", void 0);
 __decorate([

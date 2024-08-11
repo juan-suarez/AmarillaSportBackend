@@ -36,3 +36,4 @@ yarn-error.log*
 /server.js
 
 /coverage
+/dist

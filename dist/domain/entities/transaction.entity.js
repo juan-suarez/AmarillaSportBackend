@@ -42,16 +42,16 @@ __decorate([
     __metadata("design:type", String)
 ], Transaction.prototype, "status", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => customer_entity_1.Customer, customer => customer.transactions),
+    (0, typeorm_1.ManyToOne)(() => customer_entity_1.Customer, (customer) => customer.transactions),
     (0, typeorm_1.JoinColumn)(),
     __metadata("design:type", customer_entity_1.Customer)
 ], Transaction.prototype, "customer", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => transaction_detail_entity_1.TransactionDetails, transactionDetails => transactionDetails.transaction),
+    (0, typeorm_1.OneToMany)(ype => transaction_detail_entity_1.TransactionDetail, transactionDetails => transactionDetails.transaction),
     __metadata("design:type", Array)
-], Transaction.prototype, "details", void 0);
+], Transaction.prototype, "detail", void 0);
 __decorate([
-    (0, typeorm_1.OneToOne)(() => payment_entity_1.Payment, payment => payment.transaction),
+    (0, typeorm_1.OneToOne)(() => payment_entity_1.Payment, (payment) => payment.transaction),
     __metadata("design:type", payment_entity_1.Payment)
 ], Transaction.prototype, "payment", void 0);
 __decorate([

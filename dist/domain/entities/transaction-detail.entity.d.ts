@@ -1,6 +1,6 @@
 import { Transaction } from './transaction.entity';
 import { Product } from './product.entity';
-export declare class TransactionDetails {
+export declare class TransactionDetail {
     id: number;
     quantity: number;
     transaction: Transaction;
