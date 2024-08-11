@@ -35,3 +35,4 @@ yarn-error.log*
 # Next.js custom server
 /server.js
 
+/coverage
