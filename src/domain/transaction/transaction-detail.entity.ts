@@ -7,7 +7,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Transaction } from './transaction.entity';
-import { Product } from './product.entity';
+import { Product } from '../product/product.entity';
 
 @Entity()
 export class TransactionDetail {

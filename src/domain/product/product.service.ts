@@ -1,8 +1,8 @@
 import { Injectable, Inject, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Product } from 'src/domain/entities/product.entity';
-import { TransactionDetailService } from './transaction-detail.service';
+import { Product } from 'src/domain/product/product.entity';
+import { TransactionDetailService } from '../transaction/transaction-detail.service';
 
 @Injectable()
 export class productService {

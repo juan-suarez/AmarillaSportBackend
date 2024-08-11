@@ -1,8 +1,7 @@
 import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CustomerService } from 'src/application/services/customer.service';
-import { Customer } from 'src/domain/entities/customer.entity';
-import { TransactionModule } from './transaction.module';
+import { CustomerService } from 'src/domain/customer/customer.service';
+import { Customer } from 'src/domain/customer/customer.entity';
 
 @Module({
   imports: [

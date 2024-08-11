@@ -1,9 +1,8 @@
 import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TransactionModule } from './transaction.module';
-import { TransactionDetailService } from 'src/application/services/transaction-detail.service';
-import { TransactionDetail } from 'src/domain/entities/transaction-detail.entity';
-import { Product } from 'src/domain/entities/product.entity';
+import { TransactionDetailService } from 'src/domain/transaction/transaction-detail.service';
+import { TransactionDetail } from 'src/domain/transaction/transaction-detail.entity';
+import { Product } from 'src/domain/product/product.entity';
 
 @Module({
   imports: [

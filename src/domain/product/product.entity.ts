@@ -5,7 +5,7 @@ import {
   CreateDateColumn,
   OneToMany,
 } from 'typeorm';
-import { TransactionDetail } from './transaction-detail.entity';
+import { TransactionDetail } from '../transaction/transaction-detail.entity';
 
 @Entity()
 export class Product {

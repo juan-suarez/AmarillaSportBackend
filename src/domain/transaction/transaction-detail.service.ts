@@ -1,14 +1,14 @@
 import { Injectable, Inject, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Customer } from 'src/domain/entities/customer.entity';
 import { Repository } from 'typeorm';
 import { TransactionService } from './Transaction.service';
+import { TransactionDetail } from 'src/domain/transaction/transaction-detail.entity';
 
 @Injectable()
-export class CustomerService {
+export class TransactionDetailService {
   constructor(
-    @InjectRepository(Customer)
-    private readonly customerRepository: Repository<Customer>,
+    @InjectRepository(TransactionDetail)
+    private readonly customerRepository: Repository<TransactionDetail>,
     @Inject(forwardRef(() => TransactionService)) 
     private readonly transactionService: TransactionService,
   ) {}

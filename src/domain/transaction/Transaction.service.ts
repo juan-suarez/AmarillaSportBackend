@@ -1,8 +1,8 @@
 import { Injectable, Inject, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Transaction } from 'typeorm';
-import { CustomerService } from './customer.service';
-import { paymentService } from './payment.service';
+import { CustomerService } from '../customer/customer.service';
+import { paymentService } from '../payment/payment.service';
 import { TransactionDetailService } from './transaction-detail.service';
 
 

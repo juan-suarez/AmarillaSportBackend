@@ -1,8 +1,7 @@
 import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Payment } from 'src/domain/entities/payment.entity';
-import { TransactionModule } from './transaction.module';
-import { paymentService } from 'src/application/services/payment.service';
+import { Payment } from 'src/domain/payment/payment.entity';
+import { paymentService } from 'src/domain/payment/payment.service';
 
 @Module({
   imports: [
