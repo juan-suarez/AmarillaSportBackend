@@ -5,7 +5,7 @@
   "author": "juan'suarez",
   "license": "UNLICENSED",
   "scripts": {
-    "build": "nest build", 
+    "build": "nest build",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "build-app": "docker-compose build",
@@ -19,14 +19,16 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest",
     "test:unit": "jest --config jest.config.js"
-    
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
     "@nestjs/core": "^10.0.0",
     "@nestjs/platform-express": "^10.0.0",
+    "@nestjs/typeorm": "^10.0.2",
+    "pg": "^8.12.0",
     "reflect-metadata": "^0.2.0",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "typeorm": "^0.3.20"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",

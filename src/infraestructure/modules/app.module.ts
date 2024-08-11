@@ -1,9 +1,41 @@
 import { Module } from '@nestjs/common';
-import { AppController } from '../../adapters/controllers/app.controller';
-import { AppService } from '../../application/services/app.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { AppController } from 'src/adapters/controllers/app.controller';
+import { AppService } from 'src/application/services/app.service';
+import { Customer } from 'src/domain/entities/customer.entity';
+import { Payment } from 'src/domain/entities/payment.entity';
+import { Product } from 'src/domain/entities/product.entity';
+import { TransactionDetails } from 'src/domain/entities/transaction-detail.entity';
+import { Transaction } from 'typeorm';
 
 @Module({
-  imports: [],
+  imports: [
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: process.env.POSTGRES_HOST || 'localhost',
+      port: parseInt(process.env.POSTGRES_PORT, 10) || 5432,
+      username: process.env.POSTGRES_USER || 'user',
+      password: process.env.POSTGRES_PASSWORD || 'password',
+      database: process.env.POSTGRES_DB || 'app',
+      entities: [
+        Transaction,
+        Customer,
+        Product,
+        TransactionDetails,
+        Payment,
+      ],
+      synchronize: true,
+      logging: true,
+    }),
+
+    TypeOrmModule.forFeature([
+      Transaction,
+      Customer,
+      Product,
+      TransactionDetails,
+      Payment,
+    ]),
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
