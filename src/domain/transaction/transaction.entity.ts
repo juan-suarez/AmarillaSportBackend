@@ -33,7 +33,7 @@ export class Transaction {
   @Column({ type: 'varchar' })
   status: string;
 
-  @ManyToOne(Type => Customer, (customer) => customer.transactions)
+  @ManyToOne(Type => Customer, (customer) => customer.transactions, { cascade: true })
   @JoinColumn({ name: 'customer_id'})
   customer: Customer;
 

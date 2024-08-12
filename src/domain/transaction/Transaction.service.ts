@@ -1,21 +1,20 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOneOptions, Repository } from 'typeorm';
 import { Transaction } from './transaction.entity';
 import { CustomerDto } from 'src/application/customer/create-customer.dto';
 import { Failure, Result, Success } from 'src/utils/result';
 import { TransactionDto } from 'src/application/transaction/transaction.dto';
 import { CustomerService } from '../customer/customer.service';
+import { Customer } from '../customer/customer.entity';
 
 
 
 @Injectable()
 export class TransactionService {
   constructor(
-    @InjectRepository(Transaction)
-    private readonly transactionRepository: Repository<Transaction>,
-    @Inject(forwardRef(() => CustomerService) )
-    private readonly customerService: CustomerService
+    @InjectRepository(Transaction) private readonly transactionRepository: Repository<Transaction>,
+    @Inject(forwardRef(() => CustomerService)) private readonly customerService: CustomerService
   ) { }
 
   async getTransaction(id: number): Promise<Result<TransactionDto, string>> {
@@ -37,10 +36,10 @@ export class TransactionService {
         base_fee:transactionDto.baseFee,
         delivery_fee: transactionDto.deliveryFee,
         total_amount: transactionDto.totalAmount,
-        customer_id: transactionDto.customer,
+        customer: transactionDto.customer,
       }
       const newTransaction = this.transactionRepository.create(transaction);
-      console.log(newTransaction)
+
       return new Success( await this.transactionRepository.save(newTransaction));
     } catch (error) {
       console.log("error");
