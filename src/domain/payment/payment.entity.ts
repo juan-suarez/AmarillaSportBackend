@@ -11,11 +11,11 @@ import { Transaction } from '../transaction/transaction.entity';
 
 @Entity()
 export class Payment {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('increment')
   id: number;
 
   @OneToOne(() => Transaction, { onDelete: 'CASCADE' })
-  @JoinColumn()
+  @JoinColumn({name:'transaction_id'})
   transaction: Transaction;
 
   @Column({ length: 50 })

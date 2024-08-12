@@ -1,9 +1,12 @@
-import { Injectable, Inject, forwardRef } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Transaction } from 'typeorm';
+import { Repository } from 'typeorm';
+import { Transaction } from './transaction.entity';
+import { CustomerDto } from 'src/application/customer/create-customer.dto';
+import { Failure, Result, Success } from 'src/utils/result';
+import { TransactionDto } from 'src/application/transaction/transaction.dto';
 import { CustomerService } from '../customer/customer.service';
-import { paymentService } from '../payment/payment.service';
-import { TransactionDetailService } from './transaction-detail.service';
+
 
 
 @Injectable()
@@ -11,13 +14,57 @@ export class TransactionService {
   constructor(
     @InjectRepository(Transaction)
     private readonly transactionRepository: Repository<Transaction>,
-    @Inject(forwardRef(() => CustomerService))
-    private readonly customerService: CustomerService,
-    @Inject(forwardRef(() => paymentService))
-    private readonly paymentService: paymentService,
-    @Inject(forwardRef(() => TransactionDetailService))
-    private readonly transactionDetailService: TransactionDetailService,
-  ) {}
+    @Inject(forwardRef(() => CustomerService) )
+    private readonly customerService: CustomerService
+  ) { }
 
-  // Métodos de servicio aquí
+  async getTransaction(id: number): Promise<Result<TransactionDto, string>> {
+    const transaction = await this.transactionRepository.findOne({ where: { id } });
+
+    if (!transaction) {
+      return new Failure(`Transaction with ID ${id} not found`);
+    }
+
+    return new Success(this.mapToDto(transaction));
+
+  }
+
+  async createTransaction(transactionDto: TransactionDto): Promise<Result<Transaction, string>> {
+    try {
+      const transaction = {
+        transaction_number: transactionDto.transactionNumber,
+        status: transactionDto.status,
+        base_fee:transactionDto.baseFee,
+        delivery_fee: transactionDto.deliveryFee,
+        total_amount: transactionDto.totalAmount,
+        customer_id: transactionDto.customer,
+      }
+      const newTransaction = this.transactionRepository.create(transaction);
+      console.log(newTransaction)
+      return new Success( await this.transactionRepository.save(newTransaction));
+    } catch (error) {
+      console.log("error");
+      return new Failure('Failed to create Transaction');
+    }
+
+  }
+
+  async getCustomers() {
+    return await this.customerService.getCustomers()
+  }
+
+  private mapToDto(transaction: Transaction): TransactionDto {
+    return {
+      id: transaction.id,
+      transactionNumber: transaction.transaction_number,
+      status: transaction.status,
+      baseFee: transaction.base_fee,
+      deliveryFee: transaction.delivery_fee,
+      totalAmount: transaction.total_amount,
+      customer: transaction.customer,
+      createdAt: transaction.created_at,
+      updatedAt: transaction.updated_at
+    };
+  }
+
 }

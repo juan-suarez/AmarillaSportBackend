@@ -9,7 +9,7 @@ import { Transaction } from '../transaction/transaction.entity';
 
 @Entity()
 export class Customer {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('increment')
   id: number;
 
   @Column({ type: 'varchar', length: 255 })
@@ -18,7 +18,7 @@ export class Customer {
   @Column({ type: 'varchar', length: 255 })
   last_name: string;
 
-  @Column({ type: 'varchar', unique: true })
+  @Column({ type: 'varchar' })
   email: string;
 
   @OneToMany(Type => Transaction, transaction => transaction.customer)

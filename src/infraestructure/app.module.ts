@@ -7,9 +7,15 @@ import { Product } from 'src/domain/product/product.entity';
 import { TransactionDetail } from 'src/domain/transaction/transaction-detail.entity';
 import { Transaction } from 'src/domain/transaction/transaction.entity';
 import { AppService } from './app.service';
+import { CustomerModule } from 'src/application/customer/customer.module';
+import { TransactionModule } from 'src/application/transaction/transaction.module';
+import { TransactionDetailModule } from 'src/application/transaction/transaction-details.module';
+import { PaymentModule } from 'src/application/payment/payment.module';
+import { ProductModule } from 'src/application/product/product.module';
 
 @Module({
   imports: [
+    //this must be refactored with a dataBase Module
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.POSTGRES_HOST || 'localhost',
@@ -20,6 +26,11 @@ import { AppService } from './app.service';
       entities:[Customer, Product, Transaction, TransactionDetail, Payment],
       synchronize: true,
     }),
+    CustomerModule,
+    TransactionModule,
+    TransactionDetailModule,
+    PaymentModule,
+    ProductModule
   ],
   controllers: [AppController],
   providers: [AppService],

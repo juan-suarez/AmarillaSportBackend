@@ -1,17 +1,17 @@
-import { Module, forwardRef } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { Transaction } from 'typeorm';
+import { Module } from '@nestjs/common';
 import { TransactionService } from 'src/domain/transaction/Transaction.service';
-import { TransactionDetail } from 'src/domain/transaction/transaction-detail.entity';
 import { Customer } from 'src/domain/customer/customer.entity';
+import { Transaction } from 'src/domain/transaction/transaction.entity';
+import { TransactionDetail } from 'src/domain/transaction/transaction-detail.entity';
 import { Payment } from 'src/domain/payment/payment.entity';
-// Importa el módulo relacionado
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { CustomerService } from 'src/domain/customer/customer.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Transaction,TransactionDetail,Customer, Payment]), 
+    TypeOrmModule.forFeature([Transaction,Customer,TransactionDetail, Payment]),
   ],
-  providers: [TransactionService],
-  exports: [TransactionService],
+  providers: [TransactionService, CustomerService],
+  exports: [TransactionService, CustomerService],
 })
 export class TransactionModule {}

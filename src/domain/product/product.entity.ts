@@ -3,13 +3,14 @@ import {
   Column,
   PrimaryGeneratedColumn,
   CreateDateColumn,
-  OneToMany,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
 import { TransactionDetail } from '../transaction/transaction-detail.entity';
 
 @Entity()
 export class Product {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('increment')
   id: number;
 
   @Column({ length: 255 })
@@ -24,7 +25,8 @@ export class Product {
   @Column('int')
   stock_quantity: number;
 
-  @OneToMany(Type => TransactionDetail, TransactionDetail => TransactionDetail.product)
+  @OneToOne(Type => TransactionDetail, transactionDetail => transactionDetail.product)
+  @JoinColumn()
   detail: TransactionDetail
 
   @CreateDateColumn()

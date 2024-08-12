@@ -9,8 +9,6 @@ export class paymentService {
   constructor(
     @InjectRepository(Payment)
     private readonly customerRepository: Repository<Payment>,
-    @Inject(forwardRef(() => TransactionService)) 
-    private readonly transactionService: TransactionService,
   ) {}
 
 }

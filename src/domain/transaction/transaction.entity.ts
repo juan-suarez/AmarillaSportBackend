@@ -15,7 +15,7 @@ import { Payment } from '../payment/payment.entity';
 
 @Entity()
 export class Transaction {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('increment')
   id: number;
 
   @Column({ type: 'varchar', unique: true })
@@ -33,14 +33,14 @@ export class Transaction {
   @Column({ type: 'varchar' })
   status: string;
 
-  @ManyToOne(() => Customer, (customer) => customer.transactions)
-  @JoinColumn()
+  @ManyToOne(Type => Customer, (customer) => customer.transactions)
+  @JoinColumn({ name: 'customer_id'})
   customer: Customer;
 
-  @OneToMany(ype => TransactionDetail, transactionDetails => transactionDetails.transaction)
+  @OneToMany(Type => TransactionDetail, transactionDetails => transactionDetails.transaction)
   detail: TransactionDetail[];
 
-  @OneToOne(() => Payment, (payment) => payment.transaction) // should be an OneToMany if we can retry the payment
+  @OneToOne(Type => Payment, (payment) => payment.transaction) // should be an OneToMany if we can retry the payment
   payment: Payment;
 
   @CreateDateColumn()

@@ -6,11 +6,13 @@ import { TransactionDetailService } from '../transaction/transaction-detail.serv
 
 @Injectable()
 export class productService {
-  constructor(
+  constructor( 
     @InjectRepository(Product)
-    private readonly customerRepository: Repository<Product>,
-    @Inject(forwardRef(() => TransactionDetailService)) 
-    private readonly transactionService: TransactionDetailService,
+    private readonly productRepository: Repository<Product> 
   ) {}
+
+  async getProducts(): Promise<Product[]> {
+    return await this.productRepository.find();
+  }
 
 }
