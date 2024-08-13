@@ -22,16 +22,10 @@ export class Payment {
   payment_method: string;
 
   @Column({ length: 50 })
-  payment_status: string;
-
-  @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
-  payment_date: Date;
+  status: string;
 
   @Column({ length: 255, nullable: true })
-  bank_transaction_id: string;
-
-  @Column({ length: 50, nullable: true })
-  bank_status: string;
+  bank_transaction_number: string;
 
   @CreateDateColumn()
   created_at: Date;

@@ -1,13 +1,17 @@
-import { Module, forwardRef } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { Payment } from 'src/domain/payment/payment.entity';
 import { paymentService } from 'src/domain/payment/payment.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Transaction } from 'src/domain/transaction/transaction.entity';
+import { Customer } from 'src/domain/customer/customer.entity';
+import { TransactionService } from 'src/domain/transaction/Transaction.service';
+import { CustomerService } from 'src/domain/customer/customer.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Payment])
+    TypeOrmModule.forFeature([Payment, Transaction, Customer])
   ],
-  providers: [paymentService],
-  exports: [paymentService],
+  providers: [paymentService, TransactionService, CustomerService],
+  exports: [paymentService, TransactionService, CustomerService],
 })
 export class PaymentModule {}

@@ -46,11 +46,11 @@ describe('TransactionService', () => {
     it('should return a failure when find an inexistent id', async () => {
       const inexistentId = 100000;
 
-      const fetchedCustomer = await service.getTransaction(inexistentId) as Failure<string>;
+      const fetchedTransaction = await service.getTransaction(inexistentId) as Failure<string>;
 
 
-      expect(fetchedCustomer.isFailure()).toBeTruthy()
-      expect(fetchedCustomer.error).toBe(`Transaction with ID ${inexistentId} not found`)
+      expect(fetchedTransaction.isFailure()).toBeTruthy()
+      expect(fetchedTransaction.error).toBe(`Transaction with ID ${inexistentId} not found`)
     })
 
   });
