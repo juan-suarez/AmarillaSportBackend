@@ -2,10 +2,10 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  OneToOne,
   CreateDateColumn,
   UpdateDateColumn,
   JoinColumn,
+  ManyToOne,
 } from 'typeorm';
 import { Transaction } from '../transaction/transaction.entity';
 
@@ -14,7 +14,7 @@ export class Payment {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @OneToOne(() => Transaction, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Transaction, { onDelete: 'CASCADE' , cascade: true })
   @JoinColumn({name:'transaction_id'})
   transaction: Transaction;
 

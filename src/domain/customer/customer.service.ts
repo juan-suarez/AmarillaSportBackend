@@ -1,9 +1,8 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Customer } from 'src/domain/customer/customer.entity';
 import { Failure, Result, Success } from 'src/utils/result';
 import { Repository } from 'typeorm';
-import { TransactionService } from '../transaction/Transaction.service';
 import { CustomerDto } from 'src/application/customer/create-customer.dto';
 
 @Injectable()

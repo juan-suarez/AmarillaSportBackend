@@ -1,8 +1,5 @@
 import { Test, TestingModule } from "@nestjs/testing";
-import { CustomerDto } from "src/application/customer/create-customer.dto";
 import { TransactionDto } from "src/application/transaction/transaction.dto";
-import { Customer } from "src/domain/customer/customer.entity";
-import { CustomerService } from "src/domain/customer/customer.service";
 import { Transaction } from "src/domain/transaction/transaction.entity";
 import { TransactionService } from "src/domain/transaction/Transaction.service";
 import { AppModule } from "src/infraestructure/app.module";
@@ -25,7 +22,6 @@ describe('TransactionService', () => {
     
     it('should create and then return the same transaction', async () => {
       const customers = await service.getCustomers();
-      console.log(customers)
       const transaction: TransactionDto = {
         id: 1,
         transactionNumber: uuid(),

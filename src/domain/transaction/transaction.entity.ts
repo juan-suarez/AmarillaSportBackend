@@ -40,7 +40,7 @@ export class Transaction {
   @OneToMany(Type => TransactionDetail, transactionDetails => transactionDetails.transaction)
   detail: TransactionDetail[];
 
-  @OneToOne(Type => Payment, (payment) => payment.transaction) // should be an OneToMany if we can retry the payment
+  @OneToMany(Type => Payment, (payment) => payment.transaction) // should be an OneToMany if we can retry the payment
   payment: Payment;
 
   @CreateDateColumn()

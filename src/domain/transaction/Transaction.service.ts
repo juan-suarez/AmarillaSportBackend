@@ -14,7 +14,7 @@ import { Customer } from '../customer/customer.entity';
 export class TransactionService {
   constructor(
     @InjectRepository(Transaction) private readonly transactionRepository: Repository<Transaction>,
-    @Inject(forwardRef(() => CustomerService)) private readonly customerService: CustomerService
+    @Inject() private readonly customerService: CustomerService
   ) { }
 
   async getTransaction(id: number): Promise<Result<TransactionDto, string>> {
@@ -46,6 +46,9 @@ export class TransactionService {
       return new Failure('Failed to create Transaction');
     }
 
+  }
+  async getTransactions():Promise<Transaction[]> {
+    return await this.transactionRepository.find();
   }
 
   async getCustomers() {
