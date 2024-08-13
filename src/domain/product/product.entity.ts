@@ -23,7 +23,7 @@ export class Product {
   price: number;
 
   @Column('int')
-  stock_quantity: number;
+  stock: number;
 
   @OneToOne(Type => TransactionDetail, transactionDetail => transactionDetail.product)
   @JoinColumn()
