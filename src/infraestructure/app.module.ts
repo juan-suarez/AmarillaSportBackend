@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from 'src/adapters/controllers/app.controller';
+import { AppController } from 'src/infraestructure/adapters/controllers/app.controller';
 import { Customer } from 'src/domain/customer/customer.entity';
 import { Payment } from 'src/domain/payment/payment.entity';
 import { Product } from 'src/domain/product/product.entity';
@@ -12,6 +12,11 @@ import { TransactionModule } from 'src/application/transaction/transaction.modul
 import { TransactionDetailModule } from 'src/application/transaction/transaction-details.module';
 import { PaymentModule } from 'src/application/payment/payment.module';
 import { ProductModule } from 'src/application/product/product.module';
+import { AuthController } from './adapters/controllers/auth/auth.controller';
+import { AuthService } from './auth.service';
+import { JwtModule } from '@nestjs/jwt';
+import { APP_GUARD } from '@nestjs/core';
+import { AuthGuard } from './utils/auth.guard';
 
 @Module({
   imports: [
@@ -30,9 +35,12 @@ import { ProductModule } from 'src/application/product/product.module';
     TransactionModule,
     TransactionDetailModule,
     PaymentModule,
-    ProductModule
+    ProductModule,
+    JwtModule.register({
+      global: true
+    })
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, AuthController],
+  providers: [ AppService, AuthService ],
 })
 export class AppModule {}

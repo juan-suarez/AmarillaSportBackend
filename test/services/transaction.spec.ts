@@ -23,13 +23,12 @@ describe('TransactionService', () => {
     it('should create and then return the same transaction', async () => {
       const customers = await service.getCustomers();
       const transaction: TransactionDto = {
-        id: 1,
         transactionNumber: uuid(),
         baseFee: 0,
         deliveryFee: 0,
         totalAmount: 0,
         status: 'Pending',
-        customer: customers[0],
+        customerId: customers[0].id,
         createdAt: new Date(),
         updatedAt: new Date()
       };
@@ -38,7 +37,6 @@ describe('TransactionService', () => {
       const fetchedTransaction = await service.getTransaction(newTransaction.value.id) as Success<TransactionDto>;
 
       expect(fetchedTransaction).toBeDefined();
-      expect(fetchedTransaction.value.id).toBe(newTransaction.value.id)
       expect(fetchedTransaction.value.status).toBe(newTransaction.value.status);
       expect(fetchedTransaction.value.transactionNumber).toBe(newTransaction.value.transaction_number)
     });

@@ -21,6 +21,9 @@ export class Customer {
   @Column({ type: 'varchar' })
   email: string;
 
+  @Column({ type: 'varchar', nullable: true})
+  password: string;
+
   @OneToMany(Type => Transaction, transaction => transaction.customer)
   transactions: Transaction[];
 

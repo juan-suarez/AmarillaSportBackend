@@ -36,7 +36,7 @@ export class TransactionService {
         base_fee:transactionDto.baseFee,
         delivery_fee: transactionDto.deliveryFee,
         total_amount: transactionDto.totalAmount,
-        customer: transactionDto.customer,
+        customer_id: transactionDto.customerId,
       }
       const newTransaction = this.transactionRepository.create(transaction);
 
@@ -57,13 +57,12 @@ export class TransactionService {
 
   private mapToDto(transaction: Transaction): TransactionDto {
     return {
-      id: transaction.id,
       transactionNumber: transaction.transaction_number,
       status: transaction.status,
       baseFee: transaction.base_fee,
       deliveryFee: transaction.delivery_fee,
       totalAmount: transaction.total_amount,
-      customer: transaction.customer,
+      customerId: transaction.customer.id,
       createdAt: transaction.created_at,
       updatedAt: transaction.updated_at
     };

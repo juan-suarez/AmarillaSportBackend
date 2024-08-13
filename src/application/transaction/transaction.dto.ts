@@ -1,10 +1,7 @@
-import { IsArray, IsDate, IsNotEmpty, IsNumber, IsObject, IsString, IsUUID } from "class-validator";
-import { Customer } from "src/domain/customer/customer.entity";
+import { Type } from "class-transformer";
+import {  IsDate, IsNotEmpty, IsNumber, IsString, IsUUID } from "class-validator";
 
 export class TransactionDto {
-    @IsNumber()
-    @IsNotEmpty()
-    readonly id: number;
   
     @IsUUID()
     @IsNotEmpty()
@@ -12,29 +9,34 @@ export class TransactionDto {
   
     @IsNumber()
     @IsNotEmpty()
+    @Type(()=>Number)
     readonly baseFee: number;
   
     @IsNumber()
     @IsNotEmpty()
+    @Type(()=>Number)
     readonly deliveryFee: number;
   
     @IsNumber()
     @IsNotEmpty()
+    @Type(()=>Number)
     readonly totalAmount: number;
   
     @IsString()
     @IsNotEmpty()
     status: string;
   
-    @IsObject()
-    readonly customer: Partial<Customer>;
+    @IsNumber()
+    @Type(()=> Number)
+    readonly customerId: number;
 
-  
     @IsDate()
     @IsNotEmpty()
+    @Type(()=>Date)
     readonly createdAt: Date;
   
     @IsDate()
     @IsNotEmpty()
+    @Type(()=>Date)
     readonly updatedAt: Date;
   }
