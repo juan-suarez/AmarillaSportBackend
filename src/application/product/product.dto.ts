@@ -1,5 +1,4 @@
 import { IsDate, IsNotEmpty, IsNumber, IsObject, IsString } from "class-validator";
-import { TransactionDetail } from "src/domain/transaction/transaction-detail.entity";
 
 export class ProductDto {
     @IsNumber()

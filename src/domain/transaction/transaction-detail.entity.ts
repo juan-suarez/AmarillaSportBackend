@@ -22,7 +22,7 @@ export class TransactionDetail {
   @JoinColumn({name:'transaction_id'})
   transaction: Transaction;
 
-  @OneToOne(Type => Product, product => product.detail, { cascade: true }) // onUpdate can be used for a real-time price product update
+  @OneToOne(Type => Product, product => product.detail) // onUpdate can be used for a real-time price product update
   @JoinColumn({name:'product_id'})
   product: Product;
 

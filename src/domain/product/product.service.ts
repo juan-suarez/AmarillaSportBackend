@@ -1,6 +1,6 @@
 import { Injectable, Inject, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { Product } from 'src/domain/product/product.entity';
 import { TransactionDetailService } from '../transaction/transaction-detail.service';
 import { Failure, Result, Success } from 'src/utils/result';
@@ -43,6 +43,15 @@ export class productService {
 
   async getProducts(): Promise<Product[]> {
     return await this.productRepository.find();
+  }
+
+  async findProductsByIds(productIds: number[]): Promise<Result<Product[],string>> {
+    try {
+      return new Success(await this.productRepository.find({ where: { id: In(productIds) } }));
+      
+    } catch (error) {
+      return new Failure("Error Finding products")
+    }
   }
 
   private mapToDto(product: Product): ProductDto {

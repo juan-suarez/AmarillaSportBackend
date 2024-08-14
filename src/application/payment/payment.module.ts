@@ -4,8 +4,8 @@ import { paymentService } from 'src/domain/payment/payment.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Transaction } from 'src/domain/transaction/transaction.entity';
 import { Customer } from 'src/domain/customer/customer.entity';
-import { TransactionService } from 'src/domain/transaction/Transaction.service';
 import { CustomerService } from 'src/domain/customer/customer.service';
+import { TransactionService } from 'src/domain/transaction/transaction.service';
 
 @Module({
   imports: [

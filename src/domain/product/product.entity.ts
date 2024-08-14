@@ -25,8 +25,7 @@ export class Product {
   @Column('int')
   stock: number;
 
-  @OneToOne(Type => TransactionDetail, transactionDetail => transactionDetail.product)
-  @JoinColumn()
+  @OneToOne(Type => TransactionDetail, transactionDetail => transactionDetail.product )
   detail: TransactionDetail
 
   @CreateDateColumn()

@@ -1,7 +1,7 @@
 import { Injectable, Inject, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { TransactionService } from '../transaction/Transaction.service';
+import { TransactionService } from '../transaction/transaction.service';
 import { Payment } from 'src/domain/payment/payment.entity';
 import { Failure, Result, Success } from 'src/utils/result';
 import { PaymentDto } from 'src/application/payment/payment.dto';
@@ -42,6 +42,12 @@ export class paymentService {
     }
 
   }
+
+  async updatePaymentStatus(payment: Payment, newStatus: string) {
+    payment.status = newStatus;
+    
+    return new Success( this.paymentRepository.save(payment));
+  }
   
   async getTransactions(){
     return await this.transactionService.getTransactions();
@@ -49,13 +55,10 @@ export class paymentService {
 
   private mapToDto(payment: Payment): PaymentDto {
     return {
-      id: payment.id,
       transaction: payment.transaction,
       status: payment.status,
       bankTransactionNumber: payment.bank_transaction_number,
       paymentMethod: payment.payment_method,
-      createdAt:payment.created_at,
-      updateAt: payment.updated_at
     };
   }
 }

@@ -23,13 +23,10 @@ describe('PaymentService', () => {
     it('should create and then return the same payment', async () => {
       const transactions = await service.getTransactions();
       const payment: PaymentDto = {
-        id: 1,
         status: 'pending',
         bankTransactionNumber: uuid(),
         paymentMethod: 'credit card',
-        transaction: transactions[0],
-        createdAt: new Date(),
-        updateAt: new Date(), 
+        transaction: transactions[0], 
       };
 
       const newPayment = await service.createPayment(payment) as Success<Payment>;
@@ -37,7 +34,6 @@ describe('PaymentService', () => {
 
 
       expect(fetchedPayment).toBeDefined();
-      expect(fetchedPayment.value.id).toBe(newPayment.value.id)
       expect(fetchedPayment.value.bankTransactionNumber).toBe(newPayment.value.bank_transaction_number)
       expect(fetchedPayment.value.paymentMethod).toBe(newPayment.value.payment_method)
       expect(fetchedPayment.value.status).toBe(newPayment.value.status)

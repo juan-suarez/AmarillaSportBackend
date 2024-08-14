@@ -29,19 +29,18 @@ export class CustomerService {
 
   }
 
-  async getCustomerByEmail(email: string): Promise<Result<CustomerDto, string>> {
-    console.log("hola")
+  async getCustomerByEmail(email: string): Promise<Result<Customer, string>> {
     const customer = await this.customerRepository.findOne({ where: { email } });
 
     if (!customer) {
       return new Failure(`Customer with ID ${email} not found`);
     }
 
-    return new Success(this.mapToDto(customer));
+    return new Success(customer);
 
   }
 
-  async createCustomer(createCustomerDto: CreateCustomerDto): Promise<Result<Customer,string>>{
+  async createCustomer(createCustomerDto: CreateCustomerDto): Promise<Result<Customer,string>>{ //delete all dtos in domain layout
     try{
       const newCustomer = this.customerRepository.create({
         first_name:createCustomerDto.firstName,

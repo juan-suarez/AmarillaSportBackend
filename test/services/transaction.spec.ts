@@ -1,7 +1,7 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { TransactionDto } from "src/application/transaction/transaction.dto";
 import { Transaction } from "src/domain/transaction/transaction.entity";
-import { TransactionService } from "src/domain/transaction/Transaction.service";
+import { TransactionService } from "src/domain/transaction/transaction.service";
 import { AppModule } from "src/infraestructure/app.module";
 import { Failure, Success } from "src/utils/result";
 import { v4 as uuid } from 'uuid';

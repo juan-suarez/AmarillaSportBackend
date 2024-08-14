@@ -4,9 +4,9 @@ import { TransactionDetail } from 'src/domain/transaction/transaction-detail.ent
 import { TransactionDetailService } from 'src/domain/transaction/transaction-detail.service';
 import { Product } from 'src/domain/product/product.entity';
 import { Transaction } from 'src/domain/transaction/transaction.entity';
-import { TransactionService } from 'src/domain/transaction/Transaction.service';
 import { CustomerService } from 'src/domain/customer/customer.service';
 import { Customer } from 'src/domain/customer/customer.entity';
+import { TransactionService } from 'src/domain/transaction/transaction.service';
 
 
 @Module({

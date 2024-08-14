@@ -55,6 +55,17 @@ export class TransactionService {
     return await this.customerService.getCustomers()
   }
 
+  async updateTransactionStatus(transactionNumber: string, newStatus: string) {
+    const transaction = await this.transactionRepository.findOneBy({ transaction_number: transactionNumber });
+
+    if (transaction) {
+      return new Failure('Transaction not found');
+    }
+
+    transaction.status = newStatus;
+    return new Success( this.transactionRepository.save(transaction));
+  }
+
   private mapToDto(transaction: Transaction): TransactionDto {
     return {
       transactionNumber: transaction.transaction_number,
@@ -63,8 +74,6 @@ export class TransactionService {
       deliveryFee: transaction.delivery_fee,
       totalAmount: transaction.total_amount,
       customer: transaction.customer,
-      createdAt: transaction.created_at,
-      updatedAt: transaction.updated_at
     };
   }
 
