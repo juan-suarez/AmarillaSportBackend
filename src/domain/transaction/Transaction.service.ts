@@ -36,7 +36,7 @@ export class TransactionService {
         base_fee:transactionDto.baseFee,
         delivery_fee: transactionDto.deliveryFee,
         total_amount: transactionDto.totalAmount,
-        customer_id: transactionDto.customerId,
+        customer: transactionDto.customer,
       }
       const newTransaction = this.transactionRepository.create(transaction);
 
@@ -62,7 +62,7 @@ export class TransactionService {
       baseFee: transaction.base_fee,
       deliveryFee: transaction.delivery_fee,
       totalAmount: transaction.total_amount,
-      customerId: transaction.customer.id,
+      customer: transaction.customer,
       createdAt: transaction.created_at,
       updatedAt: transaction.updated_at
     };

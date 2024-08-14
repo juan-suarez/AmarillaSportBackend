@@ -28,7 +28,7 @@ describe('TransactionService', () => {
         deliveryFee: 0,
         totalAmount: 0,
         status: 'Pending',
-        customerId: customers[0].id,
+        customer: customers[0],
         createdAt: new Date(),
         updatedAt: new Date()
       };

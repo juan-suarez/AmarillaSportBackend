@@ -1,5 +1,6 @@
 import { Type } from "class-transformer";
-import {  IsDate, IsNotEmpty, IsNumber, IsString, IsUUID } from "class-validator";
+import {  IsDate, IsNotEmpty, IsNumber, IsObject, IsString, IsUUID } from "class-validator";
+import { Customer } from "src/domain/customer/customer.entity";
 
 export class TransactionDto {
   
@@ -26,9 +27,8 @@ export class TransactionDto {
     @IsNotEmpty()
     status: string;
   
-    @IsNumber()
-    @Type(()=> Number)
-    readonly customerId: number;
+    @IsObject()
+    readonly customer: Customer;
 
     @IsDate()
     @IsNotEmpty()
