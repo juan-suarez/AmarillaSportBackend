@@ -120,11 +120,6 @@ export class TransactionOrchestrator {
       return new Failure("Error creating payment")
     }
 
-    const bankTransactionResponse = await this.bankService.getTransaction(transactionNumber,this.privateAccesKey);
-    if(bankTransactionResponse.isFailure()){
-      return new Failure("Error fetching bank transaction response")
-    }
-
     return new Success({transaction_number: transaction.value.transaction_number})
   }
 
