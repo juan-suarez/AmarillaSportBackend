@@ -44,9 +44,15 @@ https://dbdiagram.io/d/amarilla-datbase-model-66bac70e8b4bb5230eefc53e
 ##
 
 ## for local testing
+**for auth:**
 1. build and start the app
 2. create a customer with `@POST localhost:3000/auth/sign-up` endpoint
 3. login in `@GET localhost:3000/auth/login`
 4. now you can use the other endpoints, no need auth data in request, all is handled with cookies. login session expires in 1 hour.
+**order creation:**
+1. add products with stock
+2. create a transaction `@POST localhost:3000/transaction`
+3. use the webhook for update the transaction `@POST localhost:3000/transaction/webhook`
+4. get the transaction `@GET localhost:3000/transaction?ref`
 
-use this  json postamn collection
+use this  [json postamn collection](https://github.com/juan-suarez/AmarillaSportBackend/blob/main/AmarillaSport.postman_collection.json)
