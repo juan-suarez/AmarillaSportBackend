@@ -43,4 +43,10 @@ https://dbdiagram.io/d/amarilla-datbase-model-66bac70e8b4bb5230eefc53e
 
 ##
 
-for testing build and init the app, you can use this `json postman collection`
+## for local testing
+1. build and start the app
+2. create a customer with `@POST localhost:3000/auth/sign-up` endpoint
+3. login in `@GET localhost:3000/auth/login`
+4. now you can use the other endpoints, no need auth data in request, all is handled with cookies. login session expires in 1 hour.
+
+use this  json postamn collection
