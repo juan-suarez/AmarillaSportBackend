@@ -4,6 +4,7 @@ import { LoginDto } from "./adapters/controllers/auth/auth.dto";
 import { Failure } from "src/utils/result";
 import { JwtService } from "@nestjs/jwt";
 import * as bcrypt  from 'bcrypt'
+import { CustomerDto } from "src/domain/customer/customer.dto";
 
 
 export class AuthService{
@@ -18,7 +19,7 @@ export class AuthService{
         if(fetchedCustomer.isFailure()){
             return new Failure("customer not found")
         }
-        const customer = fetchedCustomer.value
+        const customer = fetchedCustomer.value as CustomerDto
         const passwordsAreNotEqual  = await bcrypt.compare( password, customer.password )
         if(passwordsAreNotEqual){
             return new Failure("Incorrect password")
@@ -26,8 +27,8 @@ export class AuthService{
 
         const payload = {
             id: customer.id,
-            firstName:customer.first_name,
-            lastName: customer.last_name,
+            firstName:customer.firstName,
+            lastName: customer.lastName,
             email: customer.email
         }
 

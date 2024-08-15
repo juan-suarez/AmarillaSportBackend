@@ -7,7 +7,7 @@ import {
   JoinColumn,
   OneToOne,
 } from 'typeorm';
-import { Transaction } from './transaction.entity';
+import { Transaction } from '../transaction/transaction.entity';
 import { Product } from '../product/product.entity';
 import { Order } from '../order/order.entity';
 
@@ -29,7 +29,7 @@ export class TransactionDetail {
 
   @ManyToOne(Type => Order, order => order.transaction_details, { nullable: true })
   @JoinColumn({name:'Order_id'})
-  order: Transaction;
+  order: Order;
 
   @CreateDateColumn()
   created_at: Date;

@@ -1,10 +1,10 @@
-import { Injectable, Inject, forwardRef } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 import { Product } from 'src/domain/product/product.entity';
-import { TransactionDetailService } from '../transaction/transaction-detail.service';
 import { Failure, Result, Success } from 'src/utils/result';
-import { ProductDto } from 'src/application/product/product.dto';
+import { ProductDto, ShoppingCartInfo } from './product.dto';
+import { CreateProductDto } from 'src/application/product/product.dto';
 
 @Injectable()
 export class productService {
@@ -24,39 +24,40 @@ export class productService {
 
   }
 
-  async createProduct( productDto: ProductDto): Promise<Result<Product, string>> {
+  async createProduct( product: CreateProductDto): Promise<Result<ProductDto, string>> {
     try {
-      const product = {
-        name: productDto.name,
-        description: productDto.description,
-        price: productDto.price,
-        stock: productDto.stock,
-        image_url: productDto.imageUrl
-      }
       const newProduct = this.productRepository.create(product);
-      return new Success( await this.productRepository.save(newProduct));
+
+      return new Success( this.mapToDto(await this.productRepository.save(newProduct)));
     } catch (error) {
-      console.log("error");
+      console.error("error");
       return new Failure('Failed to create the Product');
     }
 
   }
 
-  async getProducts(): Promise<Product[]> {
-    return await this.productRepository.find();
+  async getProducts(): Promise<Result<ProductDto[],string>> {
+    try {
+      return  new Success ((await this.productRepository.find()).map(this.mapToDto));
+    } catch (error) {
+      return new Failure("Error Finding products") 
+    }
   }
 
-  async findProductsByIds(productIds: number[]): Promise<Result<Product[],string>> {
+  async findProductsByIds(productIds: number[], returnEntity: boolean = false): Promise<Result<ProductDto[] | Product[],string>> {
     try {
-      return new Success(await this.productRepository.find({ where: { id: In(productIds) } }));
+      if(returnEntity){
+        return new Success(((await this.productRepository.find({ where: { id: In(productIds) } }))));
+      }
+      return new Success(((await this.productRepository.find({ where: { id: In(productIds) } })).map(this.mapToDto)));
       
     } catch (error) {
       return new Failure("Error Finding products")
     }
   }
 
-  async updateStock(detailsInfo: any){
-    const products = detailsInfo.map( detail => {
+  async updateStock(shoppingCartInfo: ShoppingCartInfo[]): Promise<Result<ProductDto[],string>>{
+    const products = shoppingCartInfo.map( detail => {
       detail.product.stock -= detail.quantity
 
       return detail.product
@@ -65,7 +66,7 @@ export class productService {
       return new Failure("Unavailable stock")
     }
     try {
-      return new Success(await this.productRepository.save(products))
+      return new Success( (await this.productRepository.save(products)).map(this.mapToDto))
     } catch (error) {
       return new Failure("Failed to update stock")
     }
@@ -73,11 +74,13 @@ export class productService {
 
   private mapToDto(product: Product): ProductDto {
     return {
+      id: product.id,
       name:product.name,
       description:product.description,
       price: +product.price,
       stock: product.stock,
-      imageUrl: product.image_url
+      imageUrl: product.image_url,
+      transactionDetails: product.detail
     };
   }
 

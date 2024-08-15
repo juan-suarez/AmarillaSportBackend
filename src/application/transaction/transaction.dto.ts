@@ -1,93 +1,63 @@
 import { Type } from "class-transformer";
-import {  IsArray, IsDate, IsNotEmpty, isNumber, IsNumber, IsObject, IsOptional, IsString, IsUUID } from "class-validator";
+import { IsArray, IsDate, IsNotEmpty, isNumber, IsNumber, IsObject, IsOptional, IsString, IsUUID } from "class-validator";
 import { Customer } from "src/domain/customer/customer.entity";
+export class CardDetailsDto {
+  @IsString()
+  @IsNotEmpty()
+  readonly number: string;
 
-export class TransactionDto {
-  
-    @IsUUID()
-    @IsNotEmpty()
-    readonly transactionNumber: string;
-  
-    @IsNumber()
-    @IsNotEmpty()
-    @Type(()=>Number)
-    readonly baseFee: number;
-  
-    @IsNumber()
-    @IsNotEmpty()
-    @Type(()=>Number)
-    readonly deliveryFee: number;
-  
-    @IsNumber()
-    @IsNotEmpty()
-    @Type(()=>Number)
-    readonly totalAmount: number;
-  
-    @IsString()
-    @IsNotEmpty()
-    status: string;
-  
-    @IsObject()
-    readonly customer: Customer;
-  }
+  @IsString()
+  @IsNotEmpty()
+  readonly cvc: string;
 
-  export class CardDetailsDto {
-    @IsString()
-    @IsNotEmpty()
-    readonly number: string;
-  
-    @IsString()
-    @IsNotEmpty()
-    readonly cvc: string;
-  
-    @IsString()
-    @IsNotEmpty()
-    readonly exp_month: string;
-  
-    @IsString()
-    @IsNotEmpty()
-    readonly exp_year: string;
-  
-    @IsString()
-    @IsNotEmpty()
-    readonly card_holder: string;
-  }
-  
-  export class shippingAddressDetailsDto{
-    @IsString()
-    @IsNotEmpty()
-    readonly address_line_1: string;
-  
-    @IsString()
-    @IsOptional()
-    readonly address_line_2: string;
-  
-    @IsString()
-    @IsNotEmpty()
-    readonly country: string;
-  
-    @IsString()
-    @IsNotEmpty()
-    readonly region: string;
-  
-    @IsString()
-    @IsNotEmpty()
-    readonly city: string;
-  
-    @IsString()
-    @IsOptional()
-    readonly name: string;
-  
-    @IsString()
-    @IsNotEmpty()
-    readonly phone_number: string;
-  
-    @IsString()
-    @IsOptional()
-    readonly postal_code: string;
-  
-  }
- export class ShoppingCartProdcutsDto{
+  @IsString()
+  @IsNotEmpty()
+  readonly exp_month: string;
+
+  @IsString()
+  @IsNotEmpty()
+  readonly exp_year: string;
+
+  @IsString()
+  @IsNotEmpty()
+  readonly card_holder: string;
+}
+
+export class shippingAddressDetailsDto {
+  @IsString()
+  @IsNotEmpty()
+  readonly address_line_1: string;
+
+  @IsString()
+  @IsOptional()
+  readonly address_line_2: string;
+
+  @IsString()
+  @IsNotEmpty()
+  readonly country: string;
+
+  @IsString()
+  @IsNotEmpty()
+  readonly region: string;
+
+  @IsString()
+  @IsNotEmpty()
+  readonly city: string;
+
+  @IsString()
+  @IsOptional()
+  readonly name: string;
+
+  @IsString()
+  @IsNotEmpty()
+  readonly phone_number: string;
+
+  @IsString()
+  @IsOptional()
+  readonly postal_code: string;
+
+}
+export class ShoppingCartProdcutsDto {
   @IsNumber()
   @IsNotEmpty()
   readonly id: number;
@@ -107,37 +77,37 @@ export class TransactionDto {
   @IsNumber()
   @IsNotEmpty()
   readonly quantity: number;
- }
+}
 export class CreateTransactionDto {
   @IsNumber()
   @IsNotEmpty()
-  @Type(()=>Number)
-  readonly baseFee: number;
+  @Type(() => Number)
+  readonly base_fee: number;
 
   @IsNumber()
   @IsNotEmpty()
-  @Type(()=>Number)
-  readonly deliveryFee: number;
+  @Type(() => Number)
+  readonly delivery_fee: number;
 
   @IsNumber()
   @IsNotEmpty()
-  @Type(()=>Number)
-  readonly totalAmount: number;
+  @Type(() => Number)
+  readonly total_amount: number;
 
   @IsNumber()
   @IsNotEmpty()
-  @Type(()=>Number)
+  @Type(() => Number)
   readonly installments: number;
-  
-  @IsObject()
-  @IsNotEmpty()
-  readonly cardDetails: CardDetailsDto;
 
   @IsObject()
   @IsNotEmpty()
-  readonly shippingAddressDetails: shippingAddressDetailsDto;
+  readonly card_details: CardDetailsDto;
+
+  @IsObject()
+  @IsNotEmpty()
+  readonly shipping_address_details: shippingAddressDetailsDto;
 
   @IsArray()
   @IsNotEmpty()
-  readonly shoppingCartProdcuts: ShoppingCartProdcutsDto[] 
+  readonly shopping_cart_prodcuts: ShoppingCartProdcutsDto[]
 }

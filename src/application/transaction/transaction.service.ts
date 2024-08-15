@@ -1,21 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { Failure, Result, Success } from 'src/utils/result';
-import { CreateTransactionDto, shippingAddressDetailsDto, TransactionDto } from 'src/application/transaction/transaction.dto';
+import { CreateTransactionDto } from 'src/application/transaction/transaction.dto';
 import { TransactionService } from 'src/domain/transaction/transaction.service';
 import { BankService } from 'src/infraestructure/adapters/gateways/bank.service';
 import * as crypto from 'crypto';
 import { v4 as uuid } from 'uuid';
-import { CustomerDto } from '../customer/create-customer.dto';
 import { CustomerService } from 'src/domain/customer/customer.service';
 import { Customer } from 'src/domain/customer/customer.entity';
 import { paymentService } from 'src/domain/payment/payment.service';
-import { PaymentDto } from '../payment/payment.dto';
 import { productService } from 'src/domain/product/product.service';
-import { TransactionDetail } from 'src/domain/transaction/transaction-detail.entity';
-import { TransactionDetailService } from 'src/domain/transaction/transaction-detail.service';
+import { TransactionDetailService } from 'src/domain/transaction-details/transaction-detail.service';
 import { OrderService } from 'src/domain/order/order.service';
+import { CustomerDto } from 'src/domain/customer/customer.dto';
 import { Product } from 'src/domain/product/product.entity';
-
+import { Transaction } from 'src/domain/transaction/transaction.entity';
+import { TransactionDto } from 'src/domain/transaction/transaction.dto';
 
 @Injectable()
 export class TransactionOrchestrator {
@@ -33,32 +32,42 @@ export class TransactionOrchestrator {
   readonly privateAccesKey : string = "prv_stagtest_5i0ZGIGiFcDQifYsXxvsny7Y37tKqFWg"
   readonly integrityKey : string = "stagtest_integrity_nAIBuqayW70XpUqJS4qf4STYiISd89Fp"
 
-  async createTransaction(payload: CreateTransactionDto, userID: string, email:string): Promise<Result<any,string>> {
-    const productIds = payload.shoppingCartProdcuts.map(product => product.id);
-    const products = await this.productsService.findProductsByIds(productIds);
+  async createTransaction(payload: CreateTransactionDto, email:string): Promise<Result<any,string>> {
+
+    const { 
+      shopping_cart_prodcuts: shoppingCartProdcuts,
+      card_details: cardDetails,
+      shipping_address_details: shippingAddressDetails,
+      base_fee: baseFee,
+      delivery_fee: deliveryFee,
+      total_amount: totalAmount
+     } = payload
+
+    const productIds = shoppingCartProdcuts.map(product => product.id);
+    const products = await this.productsService.findProductsByIds(productIds,true);
     if(products.isFailure()){
-      return new Failure("Error Finding products");
+      return new Failure(products.error);
     }
-    const isStockAvialable = products.value.some((product,index) => product.stock >= payload.shoppingCartProdcuts[index].quantity)
+    const isStockAvialable = products.value.some((product,index) => product.stock >= shoppingCartProdcuts[index].quantity)
     if( !isStockAvialable){
       return new Failure("Stock unavailable")
     }
 
     const acceptanceToken = await this.bankService.getAcceptanceToken(this.publicAccesKey)
     if(acceptanceToken.isFailure()){
-        return new Failure("Error fetching acceptacion token")
+        return new Failure(acceptanceToken.error)
     }
 
-    const CardToken = await this.bankService.cardTokenization(payload.cardDetails,this.publicAccesKey)
+    const CardToken = await this.bankService.cardTokenization( cardDetails,this.publicAccesKey)
     if(CardToken.isFailure()){
-        return new Failure("Error fetching card token")
+        return new Failure(CardToken.error)
     }
     const transactionNumber = uuid()
-    const unsignedSignature = transactionNumber + payload.totalAmount + 'COP' + this.integrityKey
+    const unsignedSignature = transactionNumber + totalAmount + 'COP' + this.integrityKey
     const signature = crypto.createHash('sha256').update(unsignedSignature).digest('hex')
     const bankCreateTransactionPayload = {
       acceptance_token: acceptanceToken.value,
-      amount_in_cents: payload.totalAmount,
+      amount_in_cents: totalAmount,
       currency: "COP",
       customer_email: "testing@mail.com",
       payment_method: {
@@ -68,14 +77,14 @@ export class TransactionOrchestrator {
       },
       reference: transactionNumber,
       shipping_address : {
-        address_line_1: payload.shippingAddressDetails.address_line_1,
-        address_line_2: payload.shippingAddressDetails.address_line_2,
-        country: payload.shippingAddressDetails.country,
-        region: payload.shippingAddressDetails.region,
-        city: payload.shippingAddressDetails.city,
-        name: payload.shippingAddressDetails.name,
-        postal_code: payload.shippingAddressDetails.postal_code,
-        phone_number: payload.shippingAddressDetails.phone_number
+        address_line_1: shippingAddressDetails.address_line_1,
+        address_line_2: shippingAddressDetails.address_line_2,
+        country: shippingAddressDetails.country,
+        region: shippingAddressDetails.region,
+        city: shippingAddressDetails.city,
+        name: shippingAddressDetails.name,
+        postal_code: shippingAddressDetails.postal_code,
+        phone_number: shippingAddressDetails.phone_number
 
       },
       signature,
@@ -83,32 +92,35 @@ export class TransactionOrchestrator {
 
     const bankTransaction = await this.bankService.CreateTransaction(bankCreateTransactionPayload,this.privateAccesKey);
     if(bankTransaction.isFailure()){
-      return new Failure("Error with bank transaction")
+      return new Failure(bankTransaction.error)
     }
 
-    const customer = (await this.customerService.getCustomerByEmail(email)) as Success<Customer>
-    const transactionPayload: TransactionDto = {
-      transactionNumber,
-      baseFee: payload.baseFee,
-      deliveryFee: payload.deliveryFee,
-      totalAmount: payload.totalAmount,
-      customer: customer.value,
+    const customer = await this.customerService.getCustomerByEmail(email,true)
+    if(customer.isFailure()){
+      return new Failure(customer.error);
+    }
+
+    const transactionPayload = {
+      transactionNumber: uuid(),
+      baseFee: baseFee,
+      deliveryFee: deliveryFee,
+      totalAmount: totalAmount,
+      customer: customer.value as Customer,
       status: "PENDING"
     } 
 
-    const transaction = await this.transactionService.createTransaction(transactionPayload)
+    const transaction = await this.transactionService.createTransaction(transactionPayload, true)
     if(transaction.isFailure()){
-      return new Failure("Error creating transaction")
+      return new Failure(transaction.error)
     }
     
-    
-    const quantities = payload.shoppingCartProdcuts.map(product => product.quantity);
-    const transactionDetails = await this.transactionDetailService.createTransactionDetails(products.value,transaction.value,quantities)
+    const quantities = shoppingCartProdcuts.map(product => product.quantity);
+    const transactionDetails = await this.transactionDetailService.createTransactionDetails(products.value as Product[],transaction.value as Transaction,quantities)
     if(transactionDetails.isFailure()){
-      return new Failure("Error to create transaction details");
+      return new Failure(transactionDetails.error);
     }
 
-    const paymentPayload: PaymentDto = {
+    const paymentPayload = {
       paymentMethod: "CARD",
       status: "PENDING",
       transaction: transaction.value,
@@ -117,27 +129,29 @@ export class TransactionOrchestrator {
 
     const payment = await this.paymentService.createPayment(paymentPayload)
     if(payment.isFailure()){
-      return new Failure("Error creating payment")
+      return new Failure(payment.error)
     }
 
-    return new Success({transaction_number: transaction.value.transaction_number})
+    const transactionValue = transaction.value as Transaction
+    return new Success({transaction_number: transactionValue.transaction_number})
   }
 
   async confirmTransaction(ref , status):Promise<Result<string,string>>{
     const transaction = await this.transactionService.updateTransactionStatus(ref,status)
     if(transaction.isFailure()){
-      return new Failure("Transaction not found")
+      return new Failure(transaction.error)
     }
-    const updatedPayment = await this.paymentService.updatePaymentStatus(transaction.value.payment[0],status)
+    const updatedPayment = await this.paymentService.updatePaymentStatus(transaction.value.payments[0],status)
     if(updatedPayment.isFailure()){
-      return new Failure("Payment not found")
+      return new Failure(updatedPayment.error)
     }
     if(status === "APPROVED"){
+
       const customer = transaction.value.customer;
-      const transactionDetails = transaction.value.detail
+      const transactionDetails = transaction.value.transactionDetails
       const order = await this.orderService.createOrder(customer,transactionDetails)
       if(order.isFailure()){
-        return new Failure("Failed to create order")
+        return new Failure(order.error)
       }
       const detailsInfo = transactionDetails.map(detail => {
         return {
@@ -153,7 +167,7 @@ export class TransactionOrchestrator {
 
     }
     else{
-      return new Failure("Failed to pay")
+      return new Failure("Unapproved bank transaction")
     }
 
     return new Success("Order created succesfully");

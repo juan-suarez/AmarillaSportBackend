@@ -1,7 +1,7 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { TransactionDetailDto } from "src/application/transaction/transaction-detail.dto";
-import { TransactionDetail } from "src/domain/transaction/transaction-detail.entity";
-import { TransactionDetailService } from "src/domain/transaction/transaction-detail.service";
+import { TransactionDetail } from "src/domain/transaction-details/transaction-detail.entity";
+import { TransactionDetailService } from "src/domain/transaction-details/transaction-detail.service";
 import { AppModule } from "src/infraestructure/app.module";
 import { Failure, Success } from "src/utils/result";
 

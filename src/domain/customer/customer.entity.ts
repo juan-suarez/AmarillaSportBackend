@@ -34,3 +34,4 @@ export class Customer {
   @CreateDateColumn()
   created_at: Date;
 }
+

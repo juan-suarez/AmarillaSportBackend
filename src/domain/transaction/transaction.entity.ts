@@ -10,7 +10,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Customer } from '../customer/customer.entity';
-import { TransactionDetail } from './transaction-detail.entity';
+import { TransactionDetail } from '../transaction-details/transaction-detail.entity';
 import { Payment } from '../payment/payment.entity';
 
 @Entity()

@@ -1,6 +1,6 @@
 import { IsDate, IsNotEmpty, IsNumber, IsObject, IsString } from "class-validator";
 
-export class ProductDto {
+export class CreateProductDto {
 
     @IsString()
     @IsNotEmpty()
@@ -20,5 +20,5 @@ export class ProductDto {
 
     @IsString()
     @IsNotEmpty()
-    readonly imageUrl: string;
+    readonly image_url: string;
   }

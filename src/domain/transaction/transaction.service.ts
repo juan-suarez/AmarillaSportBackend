@@ -1,12 +1,10 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOneOptions, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Transaction } from './transaction.entity';
-import { CustomerDto } from 'src/application/customer/create-customer.dto';
 import { Failure, Result, Success } from 'src/utils/result';
-import { TransactionDto } from 'src/application/transaction/transaction.dto';
 import { CustomerService } from '../customer/customer.service';
-import { Customer } from '../customer/customer.entity';
+import { TransactionDto } from './transaction.dto';
 
 
 
@@ -17,18 +15,18 @@ export class TransactionService {
     @Inject() private readonly customerService: CustomerService
   ) { }
 
-  async getTransaction(id: number): Promise<Result<Transaction, string>> {
+  async getTransaction(id: number): Promise<Result<TransactionDto, string>> {
     const transaction = await this.transactionRepository.findOne({ where: { id }});
 
     if (!transaction) {
       return new Failure(`Transaction with ID ${id} not found`);
     }
 
-    return new Success(transaction);
+    return new Success(this.mapToDto(transaction));
 
   }
 
-  async createTransaction(transactionDto: TransactionDto): Promise<Result<Transaction, string>> {
+  async createTransaction(transactionDto: TransactionDto, returnEntity: boolean = false): Promise<Result<TransactionDto | Transaction, string>> {
     try {
       const transaction = {
         transaction_number: transactionDto.transactionNumber,
@@ -39,29 +37,27 @@ export class TransactionService {
         customer: transactionDto.customer,
       }
       const newTransaction = this.transactionRepository.create(transaction);
-      return new Success( await this.transactionRepository.save(newTransaction));
+
+      if(returnEntity){
+        return new Success( await this.transactionRepository.save(newTransaction));
+      }
+
+      return new Success( this.mapToDto(await this.transactionRepository.save(newTransaction)));
     } catch (error) {
-      console.log("error");
+      console.error(error);
       return new Failure('Failed to create Transaction');
     }
     
   }
-  async getTransactions():Promise<Transaction[]> {
-    return await this.transactionRepository.find();
-  }
 
-  async getCustomers() {
-    return await this.customerService.getCustomers()
-  }
-
-  async updateTransactionStatus(transactionNumber: string, newStatus: string){
+  async updateTransactionStatus(transactionNumber: string, newStatus: string): Promise<Result<TransactionDto ,string>>{
     const transaction = await this.transactionRepository.findOne({where: {transaction_number: transactionNumber} , relations : ['detail', 'detail.product', 'payment', 'customer']} );
     if (!transaction) {
       return new Failure('Transaction not found');
     }
     try {
       transaction.status = newStatus;
-      return new Success(await this.transactionRepository.save(transaction));
+      return new Success(this.mapToDto(await this.transactionRepository.save(transaction)));
       
     } catch (error) {
       return new Failure("Error updating transaction")
@@ -77,12 +73,15 @@ export class TransactionService {
 
   private mapToDto(transaction: Transaction): TransactionDto {
     return {
+      id: transaction.id,
       transactionNumber: transaction.transaction_number,
       status: transaction.status,
       baseFee: transaction.base_fee,
       deliveryFee: transaction.delivery_fee,
       totalAmount: transaction.total_amount,
       customer: transaction.customer,
+      transactionDetails: transaction.detail,
+      payments: transaction.payment
     };
   }
 

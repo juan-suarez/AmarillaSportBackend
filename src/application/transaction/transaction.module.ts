@@ -11,9 +11,9 @@ import { BankService } from 'src/infraestructure/adapters/gateways/bank.service'
 import { HttpModule } from '@nestjs/axios';
 import { paymentService } from 'src/domain/payment/payment.service';
 import { productService } from 'src/domain/product/product.service';
-import { TransactionDetailService } from 'src/domain/transaction/transaction-detail.service';
+import { TransactionDetailService } from 'src/domain/transaction-details/transaction-detail.service';
 import { Product } from 'src/domain/product/product.entity';
-import { TransactionDetail } from 'src/domain/transaction/transaction-detail.entity';
+import { TransactionDetail } from 'src/domain/transaction-details/transaction-detail.entity';
 import { Order } from 'src/domain/order/order.entity';
 import { OrderService } from 'src/domain/order/order.service';
 

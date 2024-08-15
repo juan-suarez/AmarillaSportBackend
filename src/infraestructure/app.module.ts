@@ -4,7 +4,7 @@ import { AppController } from 'src/infraestructure/adapters/controllers/app.cont
 import { Customer } from 'src/domain/customer/customer.entity';
 import { Payment } from 'src/domain/payment/payment.entity';
 import { Product } from 'src/domain/product/product.entity';
-import { TransactionDetail } from 'src/domain/transaction/transaction-detail.entity';
+import { TransactionDetail } from 'src/domain/transaction-details/transaction-detail.entity';
 import { Transaction } from 'src/domain/transaction/transaction.entity';
 import { AppService } from './app.service';
 import { CustomerModule } from 'src/application/customer/customer.module';

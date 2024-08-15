@@ -2,7 +2,7 @@ import { Body, Controller, Get, Post, UseGuards, UsePipes, ValidationPipe } from
 import { LoginDto } from './auth/auth.dto';
 import { productService } from 'src/domain/product/product.service';
 import { AuthGuard } from 'src/infraestructure/utils/auth.guard';
-import { ProductDto } from 'src/application/product/product.dto';
+import { CreateProductDto } from 'src/application/product/product.dto';
 
 @Controller('products')
 @UseGuards(AuthGuard)
@@ -18,7 +18,7 @@ export class ProductsController {
     }
     @Post()
     @UsePipes(new ValidationPipe({ transform: true }))
-    async PostProduct(@Body() payload : ProductDto){
+    async PostProduct(@Body() payload : CreateProductDto){
         return this.productService.createProduct(payload)
     }
 }

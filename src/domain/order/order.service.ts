@@ -3,7 +3,7 @@ import { Customer } from 'src/domain/customer/customer.entity';
 import { Failure, Result, Success } from 'src/utils/result';
 import { Repository } from 'typeorm';
 import { Order } from './order.entity';
-import { TransactionDetail } from '../transaction/transaction-detail.entity';
+import { TransactionDetail } from '../transaction-details/transaction-detail.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CustomerService } from '../customer/customer.service';
 

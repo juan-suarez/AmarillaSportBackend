@@ -1,12 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { TransactionDetail } from 'src/domain/transaction/transaction-detail.entity';
+import { TransactionDetail } from 'src/domain/transaction-details/transaction-detail.entity';
 import { Failure, Result, Success } from 'src/utils/result';
-import { TransactionDetailDto } from 'src/application/transaction/transaction-detail.dto';
-import { TransactionService } from './transaction.service';
+import { TransactionService } from '../transaction/transaction.service';
 import { Product } from '../product/product.entity';
-import { Transaction } from './transaction.entity';
+import { Transaction } from '../transaction/transaction.entity';
+import { TransactionDetailDto } from './transaction-detail.dto';
 
 @Injectable()
 export class TransactionDetailService {
@@ -26,7 +26,7 @@ export class TransactionDetailService {
 
   }
 
-  async createTransactionDetail({ transaction, quantity}: TransactionDetailDto): Promise<Result<TransactionDetail, string>> {
+  async createTransactionDetail({ transaction, quantity}: TransactionDetailDto): Promise<Result<TransactionDetailDto, string>> {
     try {
       const transactionDetail = {
         transaction,
@@ -36,7 +36,7 @@ export class TransactionDetailService {
 
       return new Success( await this.transactionDetailRepository.save(newTransactionDetail));
     } catch (error) {
-      console.log("error");
+      console.error(error);
       return new Failure('Failed to create TransactionDEtail');
     }
 
@@ -57,35 +57,19 @@ export class TransactionDetailService {
 
       return new Success( await this.transactionDetailRepository.save(transactionDetails) );
     } catch (error) {
-      console.log(error)
+      console.error(error)
       return new Failure("Error creating transaction details")
     }
 
-  }
-  
-  async getTransactions(){
-    return await this.transactionService.getTransactions();
-  }
-
-  async getTransactionDetailsByTransactionId(transactionId){
-    const transaction = await this.transactionService.getTransaction(transactionId)
-    if(transaction.isFailure()){
-      return new Failure("transaction not found")
-    }
-    try {
-      const transactionDetails = await this.transactionDetailRepository.findBy({transaction: transaction.value})
-      return new Success(transactionDetails)
-    } catch (error) {
-      
-    }
   }
 
   private mapToDto(transactionDetail: TransactionDetail): TransactionDetailDto {
     return {
       id: transactionDetail.id,
-      transaction: transactionDetail.transaction,
       quantity: transactionDetail.quantity,
-      createdAt: transactionDetail.created_at,
+      transaction: transactionDetail.transaction,
+      order: transactionDetail.order,
+      product: transactionDetail.product
     };
   }
 }

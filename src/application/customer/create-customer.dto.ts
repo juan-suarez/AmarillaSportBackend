@@ -4,11 +4,11 @@ export class CreateCustomerDto {
 
   @IsString()
   @IsNotEmpty()
-  readonly firstName: string;
+  readonly first_name: string;
 
   @IsString()
   @IsNotEmpty()
-  readonly lastName: string;
+  readonly last_name: string;
 
   @IsEmail()
   @IsNotEmpty()
@@ -17,30 +17,4 @@ export class CreateCustomerDto {
   @IsString()
   @IsNotEmpty()
   readonly password: string;
-}
-
-export class CustomerDto {
-  @IsNumber()
-  @IsNotEmpty()
-  readonly id: number;
-
-  @IsString()
-  @IsNotEmpty()
-  readonly firstName: string;
-
-  @IsString()
-  @IsNotEmpty()
-  readonly lastName: string;
-
-  @IsEmail()
-  @IsNotEmpty()
-  readonly email: string;
-
-  @IsString()
-  @IsNotEmpty()
-  readonly password: string;
-
-  @IsDate()
-  @IsNotEmpty()
-  readonly createdAt
 }

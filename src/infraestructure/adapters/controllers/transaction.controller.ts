@@ -14,14 +14,14 @@ export class TransactionController {
     @Post('')
     @UsePipes(new ValidationPipe({ transform: true }))
     async create(@Body() body: CreateTransactionDto, @Request() req: any){
-        const { userId, email} = req.user;
+        const { email} = req.user;
 
-        return { message : await this.transactionOrhestrator.createTransaction(body,userId,email)}
+        return await this.transactionOrhestrator.createTransaction(body,email)
     }
 
     @Post('webhook')
     async webHook(@Body() payload){
-        const { reference, status, id, customer_email } = payload.data[0]
+        const { reference, status } = payload.data[0]
 
         return await this.transactionOrhestrator.confirmTransaction(reference,status)
     }

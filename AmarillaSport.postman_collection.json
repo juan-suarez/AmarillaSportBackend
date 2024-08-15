@@ -11,9 +11,16 @@
 			"item": [
 				{
 					"name": "getProducts",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "localhost:3001/products",
 							"host": [
@@ -34,7 +41,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"danna\",\n    \"description\": \"Enterizo deportivo talla unica\",\n    \"price\": 60000,\n    \"stock\": 10,\n    \"imageUrl\": \"https://bolsosymoda.co/4147-home_default/set-de-gimnasio-de-leggins-y-top.jpg\"\n}",
+							"raw": "{\n    \"name\": \"Nala\",\n    \"description\": \"Enterizo deportivo talla unica\",\n    \"price\": 70000,\n    \"stock\": 10,\n    \"image_url\": \"https://bolsosymoda.co/4147-home_default/set-de-gimnasio-de-leggins-y-top.jpg\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -66,7 +73,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"baseFee\": 500,\n    \"deliveryFee\": 500,\n    \"totalAmount\" : 3000000,\n    \"installments\": 2,\n    \"cardDetails\": {\n        \"number\": \"4242424242424242\",\n        \"cvc\": \"789\",\n        \"exp_month\": \"12\",\n        \"exp_year\": \"27\",\n        \"card_holder\": \"Pedro Pérez\"\n    },\n    \"shippingAddressDetails\": {\n        \"address_line_1\": \"cll88\",\n        \"country\": \"CO\",\n        \"region\": \"risaralda\",\n        \"city\" : \"pereira\",\n        \"phone_number\": \"3233532121\"\n    },\n    \"shoppingCartProdcuts\": [\n        {\n            \"id\": 1,\n            \"name\": \"Roma\",\n            \"description\": \"Enterizo deportivo\",\n            \"price\": \"60000.5\",\n            \"quantity\": 1\n        }\n    ]\n}",
+							"raw": "{\n    \"base_fee\": 500,\n    \"delivery_fee\": 500,\n    \"total_amount\" : 3000000,\n    \"installments\": 2,\n    \"card_details\": {\n        \"number\": \"4242424242424242\",\n        \"cvc\": \"789\",\n        \"exp_month\": \"12\",\n        \"exp_year\": \"27\",\n        \"card_holder\": \"Pedro Pérez\"\n    },\n    \"shipping_address_details\": {\n        \"address_line_1\": \"cll88\",\n        \"country\": \"CO\",\n        \"region\": \"risaralda\",\n        \"city\" : \"pereira\",\n        \"phone_number\": \"3233532121\"\n    },\n    \"shopping_cart_prodcuts\": [\n        {\n            \"id\": 1,\n            \"name\": \"Roma\",\n            \"description\": \"Enterizo deportivo\",\n            \"price\": \"60000.5\",\n            \"quantity\": 1\n        }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -93,7 +100,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"data\": [\n        {\n            \"id\": \"15113-1723667936-31889\",\n            \"created_at\": \"2024-08-14T20:38:57.016Z\",\n            \"finalized_at\": \"2024-08-14T20:38:57.603Z\",\n            \"amount_in_cents\": 3000000,\n            \"reference\": \"ee3bcb18-8d6e-4995-82ed-a611d2a8f8a1\",\n            \"customer_email\": \"juan@suarez.com\",\n            \"currency\": \"COP\",\n            \"payment_method_type\": \"CARD\",\n            \"payment_method\": {\n                \"type\": \"CARD\",\n                \"extra\": {\n                    \"bin\": \"424242\",\n                    \"name\": \"VISA-4242\",\n                    \"brand\": \"VISA\",\n                    \"exp_year\": \"27\",\n                    \"card_type\": \"CREDIT\",\n                    \"exp_month\": \"12\",\n                    \"last_four\": \"4242\",\n                    \"card_holder\": \"Pedro Pérez\",\n                    \"is_three_ds\": false,\n                    \"unique_code\": \"8482748a7e81f67e29569f18c9aa5fee315998be39bbc3717f62112ddbb77497\",\n                    \"three_ds_auth\": {\n                        \"three_ds_auth\": {\n                            \"current_step\": \"AUTHENTICATION\",\n                            \"current_step_status\": \"COMPLETED\"\n                        }\n                    },\n                    \"external_identifier\": \"NtMxZdop5V\",\n                    \"processor_response_code\": \"00\"\n                },\n                \"token\": \"tok_stagtest_5113_fcf8f9229742Be2E1072Ad6e131CbbA4\",\n                \"installments\": 2\n            },\n            \"status\": \"APPROVED\",\n            \"status_message\": null,\n            \"shipping_address\": {\n                \"address_line_1\": \"cll88\",\n                \"country\": \"CO\",\n                \"region\": \"risaralda\",\n                \"city\": \"pereira\",\n                \"phone_number\": \"3233532121\"\n            },\n            \"redirect_url\": null,\n            \"payment_source_id\": null,\n            \"payment_link_id\": null,\n            \"customer_data\": null,\n            \"billing_data\": null\n        }\n    ],\n    \"meta\": {}\n}",
+							"raw": "{\n    \"data\": [\n        {\n            \"id\": \"15113-1723667936-31889\",\n            \"created_at\": \"2024-08-14T20:38:57.016Z\",\n            \"finalized_at\": \"2024-08-14T20:38:57.603Z\",\n            \"amount_in_cents\": 3000000,\n            \"reference\": \"c1dcaf91-fee3-4fa9-95ed-ac360abaf2ae\",\n            \"customer_email\": \"juan@suarez.com\",\n            \"currency\": \"COP\",\n            \"payment_method_type\": \"CARD\",\n            \"payment_method\": {\n                \"type\": \"CARD\",\n                \"extra\": {\n                    \"bin\": \"424242\",\n                    \"name\": \"VISA-4242\",\n                    \"brand\": \"VISA\",\n                    \"exp_year\": \"27\",\n                    \"card_type\": \"CREDIT\",\n                    \"exp_month\": \"12\",\n                    \"last_four\": \"4242\",\n                    \"card_holder\": \"Pedro Pérez\",\n                    \"is_three_ds\": false,\n                    \"unique_code\": \"8482748a7e81f67e29569f18c9aa5fee315998be39bbc3717f62112ddbb77497\",\n                    \"three_ds_auth\": {\n                        \"three_ds_auth\": {\n                            \"current_step\": \"AUTHENTICATION\",\n                            \"current_step_status\": \"COMPLETED\"\n                        }\n                    },\n                    \"external_identifier\": \"NtMxZdop5V\",\n                    \"processor_response_code\": \"00\"\n                },\n                \"token\": \"tok_stagtest_5113_fcf8f9229742Be2E1072Ad6e131CbbA4\",\n                \"installments\": 2\n            },\n            \"status\": \"APPROVED\",\n            \"status_message\": null,\n            \"shipping_address\": {\n                \"address_line_1\": \"cll88\",\n                \"country\": \"CO\",\n                \"region\": \"risaralda\",\n                \"city\": \"pereira\",\n                \"phone_number\": \"3233532121\"\n            },\n            \"redirect_url\": null,\n            \"payment_source_id\": null,\n            \"payment_link_id\": null,\n            \"customer_data\": null,\n            \"billing_data\": null\n        }\n    ],\n    \"meta\": {}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -120,7 +127,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3001/transaction?ref=3f145dbe-11fa-4789-b85a-1a0857909ed1",
+							"raw": "localhost:3001/transaction?ref=c1dcaf91-fee3-4fa9-95ed-ac360abaf2ae",
 							"host": [
 								"localhost"
 							],
@@ -131,7 +138,7 @@
 							"query": [
 								{
 									"key": "ref",
-									"value": "3f145dbe-11fa-4789-b85a-1a0857909ed1"
+									"value": "c1dcaf91-fee3-4fa9-95ed-ac360abaf2ae"
 								}
 							]
 						}
@@ -178,7 +185,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"firstName\": \"testing\",\n    \"lastName\": \"user\",\n    \"email\": \"testing@User.com\",\n    \"password\": \"testin123\"\n}",
+							"raw": "{\n    \"first_name\": \"testing\",\n    \"last_name\": \"user\",\n    \"email\": \"testing@User.com\",\n    \"password\": \"testin123\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"

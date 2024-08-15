@@ -4,7 +4,7 @@ import { Repository, Transaction } from 'typeorm';
 import { TransactionService } from '../transaction/transaction.service';
 import { Payment } from 'src/domain/payment/payment.entity';
 import { Failure, Result, Success } from 'src/utils/result';
-import { PaymentDto } from 'src/application/payment/payment.dto';
+import { PaymentDto } from './payment.dto';
 
 @Injectable()
 export class paymentService {
@@ -25,40 +25,37 @@ export class paymentService {
 
   }
 
-  async createPayment( paymentDto: PaymentDto): Promise<Result<Payment, string>> {
+  async createPayment( payment ): Promise<Result<PaymentDto, string>> {
     try {
-      const payment = {
-        transaction: paymentDto.transaction,
-        payment_method: paymentDto.paymentMethod,
-        status: paymentDto.status,
-        bank_transaction_number: paymentDto.bankTransactionNumber
+      const paymentPayload = {
+        transaction: payment.transaction,
+        payment_method: payment.paymentMethod,
+        status: payment.status,
+        bank_transaction_number: payment.bankTransactionNumber
       }
-      const newPayment = this.paymentRepository.create(payment);
+      const newPayment = this.paymentRepository.create(paymentPayload);
 
-      return new Success( await this.paymentRepository.save(newPayment));
+      return new Success( this.mapToDto(await this.paymentRepository.save(newPayment)));
     } catch (error) {
-      console.log("error");
+      console.error("error");
       return new Failure('Failed to create the payment');
     }
 
   }
 
-  async updatePaymentStatus(payment: Payment , newStatus: string) {
+  async updatePaymentStatus(payment: Payment , newStatus: string): Promise<Result<PaymentDto,string>>{
     payment.status = newStatus;
 
     try {
-      return new Success(await this.paymentRepository.save(payment));
+      return new Success(this.mapToDto(await this.paymentRepository.save(payment)));
     } catch (error) {
       return new Failure("Error updating payment status")
     }
   }
-  
-  async getTransactions(){
-    return await this.transactionService.getTransactions();
-  }
 
   private mapToDto(payment: Payment): PaymentDto {
     return {
+      id: payment.id,
       transaction: payment.transaction,
       status: payment.status,
       bankTransactionNumber: payment.bank_transaction_number,
