@@ -1,11 +1,9 @@
 import { Test, TestingModule } from "@nestjs/testing";
-import { PaymentDto } from "src/application/payment/payment.dto";
 import { ProductDto } from "src/application/product/product.dto";
 import { Product } from "src/domain/product/product.entity";
 import { productService } from "src/domain/product/product.service";
 import { AppModule } from "src/infraestructure/app.module";
 import { Failure, Success } from "src/utils/result";
-import { v4 as uuid } from 'uuid';
 
 describe('ProductService', () => {
   let service: productService;

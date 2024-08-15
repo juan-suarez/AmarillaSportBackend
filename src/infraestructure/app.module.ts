@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from 'src/adapters/controllers/app.controller';
+import { AppController } from 'src/infraestructure/adapters/controllers/app.controller';
 import { Customer } from 'src/domain/customer/customer.entity';
 import { Payment } from 'src/domain/payment/payment.entity';
 import { Product } from 'src/domain/product/product.entity';
@@ -12,6 +12,12 @@ import { TransactionModule } from 'src/application/transaction/transaction.modul
 import { TransactionDetailModule } from 'src/application/transaction/transaction-details.module';
 import { PaymentModule } from 'src/application/payment/payment.module';
 import { ProductModule } from 'src/application/product/product.module';
+import { AuthController } from './adapters/controllers/auth/auth.controller';
+import { AuthService } from './auth.service';
+import { JwtModule } from '@nestjs/jwt';
+import { Order } from 'src/domain/order/order.entity';
+import { OrderModule } from 'src/application/order/order.module';
+
 
 @Module({
   imports: [
@@ -23,16 +29,20 @@ import { ProductModule } from 'src/application/product/product.module';
       username: process.env.POSTGRES_USER || 'user',
       password: process.env.POSTGRES_PASSWORD || 'password',
       database: process.env.POSTGRES_DB || 'app',
-      entities:[Customer, Product, Transaction, TransactionDetail, Payment],
+      entities:[Customer, Product, Transaction, TransactionDetail, Payment, Order],
       synchronize: true,
     }),
     CustomerModule,
     TransactionModule,
     TransactionDetailModule,
     PaymentModule,
-    ProductModule
+    ProductModule,
+    OrderModule,
+    JwtModule.register({
+      global: true
+    })
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, AuthController ],
+  providers: [ AppService, AuthService ],
 })
 export class AppModule {}

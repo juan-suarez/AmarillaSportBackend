@@ -5,11 +5,13 @@ import { Product } from 'src/domain/product/product.entity';
 import { productService } from 'src/domain/product/product.service';
 import { TransactionDetail } from 'src/domain/transaction/transaction-detail.entity';
 import { Transaction } from 'src/domain/transaction/transaction.entity';
+import { ProductsController } from 'src/infraestructure/adapters/controllers/product.controller';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Product, TransactionDetail, Transaction, Customer]),
   ],
+  controllers: [ProductsController],
   providers: [productService ],
   exports: [productService ]
 })

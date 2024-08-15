@@ -17,14 +17,14 @@ export class TransactionService {
     @Inject() private readonly customerService: CustomerService
   ) { }
 
-  async getTransaction(id: number): Promise<Result<TransactionDto, string>> {
-    const transaction = await this.transactionRepository.findOne({ where: { id } });
+  async getTransaction(id: number): Promise<Result<Transaction, string>> {
+    const transaction = await this.transactionRepository.findOne({ where: { id }});
 
     if (!transaction) {
       return new Failure(`Transaction with ID ${id} not found`);
     }
 
-    return new Success(this.mapToDto(transaction));
+    return new Success(transaction);
 
   }
 
@@ -39,13 +39,12 @@ export class TransactionService {
         customer: transactionDto.customer,
       }
       const newTransaction = this.transactionRepository.create(transaction);
-
       return new Success( await this.transactionRepository.save(newTransaction));
     } catch (error) {
       console.log("error");
       return new Failure('Failed to create Transaction');
     }
-
+    
   }
   async getTransactions():Promise<Transaction[]> {
     return await this.transactionRepository.find();
@@ -55,18 +54,37 @@ export class TransactionService {
     return await this.customerService.getCustomers()
   }
 
+  async updateTransactionStatus(transactionNumber: string, newStatus: string){
+    const transaction = await this.transactionRepository.findOne({where: {transaction_number: transactionNumber} , relations : ['detail', 'detail.product', 'payment', 'customer']} );
+    if (!transaction) {
+      return new Failure('Transaction not found');
+    }
+    try {
+      transaction.status = newStatus;
+      return new Success(await this.transactionRepository.save(transaction));
+      
+    } catch (error) {
+      return new Failure("Error updating transaction")
+    }
+  }
+  async getTransactionByRef(ref: string){
+    try {
+      return new Success(await this.transactionRepository.findOneBy({transaction_number:ref}))
+    } catch (error) {
+      return new Failure("Transaction not found")
+    }
+  }
+
   private mapToDto(transaction: Transaction): TransactionDto {
     return {
-      id: transaction.id,
       transactionNumber: transaction.transaction_number,
       status: transaction.status,
       baseFee: transaction.base_fee,
       deliveryFee: transaction.delivery_fee,
       totalAmount: transaction.total_amount,
       customer: transaction.customer,
-      createdAt: transaction.created_at,
-      updatedAt: transaction.updated_at
     };
   }
+
 
 }

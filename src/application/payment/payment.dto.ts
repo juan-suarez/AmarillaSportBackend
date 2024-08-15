@@ -2,10 +2,6 @@ import { IsDate, IsNotEmpty, IsNumber, IsObject, IsString } from "class-validato
 import { Transaction } from "src/domain/transaction/transaction.entity";
 
 export class PaymentDto {
-    @IsNumber()
-    @IsNotEmpty()
-    readonly id: number;
-  
     @IsObject()
     readonly transaction: Partial<Transaction>;
 
@@ -20,12 +16,4 @@ export class PaymentDto {
     @IsString()
     @IsNotEmpty()
     readonly bankTransactionNumber: string;
-  
-    @IsDate()
-    @IsNotEmpty()
-    readonly createdAt: Date;
-
-    @IsDate()
-    @IsNotEmpty()
-    readonly updateAt: Date;
   }

@@ -3,7 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Customer } from 'src/domain/customer/customer.entity';
 import { Failure, Result, Success } from 'src/utils/result';
 import { Repository } from 'typeorm';
-import { CustomerDto } from 'src/application/customer/create-customer.dto';
+import { CreateCustomerDto, CustomerDto } from 'src/application/customer/create-customer.dto';
+import * as bcrypt  from 'bcrypt'
 
 @Injectable()
 export class CustomerService {
@@ -28,12 +29,24 @@ export class CustomerService {
 
   }
 
-  async createCustomer({ firstName, lastName , email}: CustomerDto): Promise<Result<Customer,string>>{
+  async getCustomerByEmail(email: string): Promise<Result<Customer, string>> {
+    const customer = await this.customerRepository.findOne({ where: { email }});
+    
+    if (!customer) {
+      return new Failure(`Customer with ID ${email} not found`);
+    }
+
+    return new Success(customer);
+
+  }
+
+  async createCustomer(createCustomerDto: CreateCustomerDto): Promise<Result<Customer,string>>{ //delete all dtos in domain layout
     try{
       const newCustomer = this.customerRepository.create({
-        first_name:firstName,
-        last_name: lastName,
-        email
+        first_name:createCustomerDto.firstName,
+        last_name: createCustomerDto.lastName,
+        password: bcrypt.hashSync(createCustomerDto.password,10),
+        email:createCustomerDto.email,
       });
 
       return new Success( await this.customerRepository.save(newCustomer));
@@ -50,6 +63,7 @@ export class CustomerService {
       firstName: customer.first_name,
       lastName: customer.last_name,
       email:customer.email,
+      password: customer.password,
       createdAt:customer.created_at
     };
   }

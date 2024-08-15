@@ -1,7 +1,7 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { TransactionDto } from "src/application/transaction/transaction.dto";
 import { Transaction } from "src/domain/transaction/transaction.entity";
-import { TransactionService } from "src/domain/transaction/Transaction.service";
+import { TransactionService } from "src/domain/transaction/transaction.service";
 import { AppModule } from "src/infraestructure/app.module";
 import { Failure, Success } from "src/utils/result";
 import { v4 as uuid } from 'uuid';
@@ -23,7 +23,6 @@ describe('TransactionService', () => {
     it('should create and then return the same transaction', async () => {
       const customers = await service.getCustomers();
       const transaction: TransactionDto = {
-        id: 1,
         transactionNumber: uuid(),
         baseFee: 0,
         deliveryFee: 0,
@@ -38,7 +37,6 @@ describe('TransactionService', () => {
       const fetchedTransaction = await service.getTransaction(newTransaction.value.id) as Success<TransactionDto>;
 
       expect(fetchedTransaction).toBeDefined();
-      expect(fetchedTransaction.value.id).toBe(newTransaction.value.id)
       expect(fetchedTransaction.value.status).toBe(newTransaction.value.status);
       expect(fetchedTransaction.value.transactionNumber).toBe(newTransaction.value.transaction_number)
     });

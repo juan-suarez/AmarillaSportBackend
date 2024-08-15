@@ -7,7 +7,7 @@ export class TransactionDetailDto {
     readonly id: number;
   
     @IsObject()
-    readonly transaction: Partial<Transaction>;
+    readonly transaction: Transaction;
   
     @IsNumber()
     @IsNotEmpty()

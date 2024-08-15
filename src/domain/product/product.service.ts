@@ -1,6 +1,6 @@
 import { Injectable, Inject, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { Product } from 'src/domain/product/product.entity';
 import { TransactionDetailService } from '../transaction/transaction-detail.service';
 import { Failure, Result, Success } from 'src/utils/result';
@@ -30,7 +30,8 @@ export class productService {
         name: productDto.name,
         description: productDto.description,
         price: productDto.price,
-        stock: productDto.stock
+        stock: productDto.stock,
+        image_url: productDto.imageUrl
       }
       const newProduct = this.productRepository.create(product);
       return new Success( await this.productRepository.save(newProduct));
@@ -45,14 +46,38 @@ export class productService {
     return await this.productRepository.find();
   }
 
+  async findProductsByIds(productIds: number[]): Promise<Result<Product[],string>> {
+    try {
+      return new Success(await this.productRepository.find({ where: { id: In(productIds) } }));
+      
+    } catch (error) {
+      return new Failure("Error Finding products")
+    }
+  }
+
+  async updateStock(detailsInfo: any){
+    const products = detailsInfo.map( detail => {
+      detail.product.stock -= detail.quantity
+
+      return detail.product
+    })
+    if(products.some(prodcut => prodcut.stock < 0)){
+      return new Failure("Unavailable stock")
+    }
+    try {
+      return new Success(await this.productRepository.save(products))
+    } catch (error) {
+      return new Failure("Failed to update stock")
+    }
+  }
+
   private mapToDto(product: Product): ProductDto {
     return {
-      id: product.id,
       name:product.name,
       description:product.description,
       price: +product.price,
       stock: product.stock,
-      createdAt:product.created_at,
+      imageUrl: product.image_url
     };
   }
 

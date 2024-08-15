@@ -24,6 +24,7 @@ describe('CustomerService', () => {
         firstName: 'pepito',
         lastName: 'perez',
         email: 'pepito-perez@mail.com',
+        password: "pepito123",
         createdAt: new Date()
       };
       const newCustomer = await service.createCustomer(customer) as Success<Customer>;;
