@@ -30,7 +30,8 @@ export class productService {
         name: productDto.name,
         description: productDto.description,
         price: productDto.price,
-        stock: productDto.stock
+        stock: productDto.stock,
+        image_url: productDto.imageUrl
       }
       const newProduct = this.productRepository.create(product);
       return new Success( await this.productRepository.save(newProduct));
@@ -54,14 +55,29 @@ export class productService {
     }
   }
 
+  async updateStock(detailsInfo: any){
+    const products = detailsInfo.map( detail => {
+      detail.product.stock -= detail.quantity
+
+      return detail.product
+    })
+    if(products.some(prodcut => prodcut.stock < 0)){
+      return new Failure("Unavailable stock")
+    }
+    try {
+      return new Success(await this.productRepository.save(products))
+    } catch (error) {
+      return new Failure("Failed to update stock")
+    }
+  }
+
   private mapToDto(product: Product): ProductDto {
     return {
-      id: product.id,
       name:product.name,
       description:product.description,
       price: +product.price,
       stock: product.stock,
-      createdAt:product.created_at,
+      imageUrl: product.image_url
     };
   }
 

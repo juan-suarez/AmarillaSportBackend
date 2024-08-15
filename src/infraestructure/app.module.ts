@@ -15,6 +15,8 @@ import { ProductModule } from 'src/application/product/product.module';
 import { AuthController } from './adapters/controllers/auth/auth.controller';
 import { AuthService } from './auth.service';
 import { JwtModule } from '@nestjs/jwt';
+import { Order } from 'src/domain/order/order.entity';
+import { OrderModule } from 'src/application/order/order.module';
 
 
 @Module({
@@ -27,7 +29,7 @@ import { JwtModule } from '@nestjs/jwt';
       username: process.env.POSTGRES_USER || 'user',
       password: process.env.POSTGRES_PASSWORD || 'password',
       database: process.env.POSTGRES_DB || 'app',
-      entities:[Customer, Product, Transaction, TransactionDetail, Payment],
+      entities:[Customer, Product, Transaction, TransactionDetail, Payment, Order],
       synchronize: true,
     }),
     CustomerModule,
@@ -35,6 +37,7 @@ import { JwtModule } from '@nestjs/jwt';
     TransactionDetailModule,
     PaymentModule,
     ProductModule,
+    OrderModule,
     JwtModule.register({
       global: true
     })

@@ -1,6 +1,6 @@
 import { Injectable, Inject, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Transaction } from 'typeorm';
 import { TransactionService } from '../transaction/transaction.service';
 import { Payment } from 'src/domain/payment/payment.entity';
 import { Failure, Result, Success } from 'src/utils/result';
@@ -43,10 +43,14 @@ export class paymentService {
 
   }
 
-  async updatePaymentStatus(payment: Payment, newStatus: string) {
+  async updatePaymentStatus(payment: Payment , newStatus: string) {
     payment.status = newStatus;
-    
-    return new Success( this.paymentRepository.save(payment));
+
+    try {
+      return new Success(await this.paymentRepository.save(payment));
+    } catch (error) {
+      return new Failure("Error updating payment status")
+    }
   }
   
   async getTransactions(){

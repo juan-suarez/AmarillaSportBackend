@@ -13,6 +13,8 @@ import { PaymentDto } from '../payment/payment.dto';
 import { productService } from 'src/domain/product/product.service';
 import { TransactionDetail } from 'src/domain/transaction/transaction-detail.entity';
 import { TransactionDetailService } from 'src/domain/transaction/transaction-detail.service';
+import { OrderService } from 'src/domain/order/order.service';
+import { Product } from 'src/domain/product/product.entity';
 
 
 @Injectable()
@@ -23,7 +25,8 @@ export class TransactionOrchestrator {
     private readonly customerService:CustomerService,
     private readonly paymentService:paymentService,
     private readonly productsService: productService,
-    private readonly transactionDetailService: TransactionDetailService
+    private readonly transactionDetailService: TransactionDetailService,
+    private readonly orderService : OrderService
   ) { }
   // this shoul de be handled with aws secrets
   readonly publicAccesKey :string = "pub_stagtest_g2u0HQd3ZMh05hsSgTS2lUV8t3s4mOt7" 
@@ -31,6 +34,16 @@ export class TransactionOrchestrator {
   readonly integrityKey : string = "stagtest_integrity_nAIBuqayW70XpUqJS4qf4STYiISd89Fp"
 
   async createTransaction(payload: CreateTransactionDto, userID: string, email:string): Promise<Result<any,string>> {
+    const productIds = payload.shoppingCartProdcuts.map(product => product.id);
+    const products = await this.productsService.findProductsByIds(productIds);
+    if(products.isFailure()){
+      return new Failure("Error Finding products");
+    }
+    const isStockAvialable = products.value.some((product,index) => product.stock >= payload.shoppingCartProdcuts[index].quantity)
+    if( !isStockAvialable){
+      return new Failure("Stock unavailable")
+    }
+
     const acceptanceToken = await this.bankService.getAcceptanceToken(this.publicAccesKey)
     if(acceptanceToken.isFailure()){
         return new Failure("Error fetching acceptacion token")
@@ -87,16 +100,12 @@ export class TransactionOrchestrator {
     if(transaction.isFailure()){
       return new Failure("Error creating transaction")
     }
-    const productIds = payload.shoppingCartProdcuts.map(product => product.id);
-    const products = await this.productsService.findProductsByIds(productIds);
-    if(products.isFailure()){
-      return new Failure("Error Finding products");
-    }
+    
     
     const quantities = payload.shoppingCartProdcuts.map(product => product.quantity);
     const transactionDetails = await this.transactionDetailService.createTransactionDetails(products.value,transaction.value,quantities)
     if(transactionDetails.isFailure()){
-      return new Failure("Error Creating transaction details");
+      return new Failure("Error to create transaction details");
     }
 
     const paymentPayload: PaymentDto = {
@@ -116,21 +125,47 @@ export class TransactionOrchestrator {
       return new Failure("Error fetching bank transaction response")
     }
 
-    return new Success({transaction_id: transaction.value.id})
+    return new Success({transaction_number: transaction.value.transaction_number})
   }
 
-  async confirmTransaction({ ref, status}){
+  async confirmTransaction(ref , status):Promise<Result<string,string>>{
     const transaction = await this.transactionService.updateTransactionStatus(ref,status)
     if(transaction.isFailure()){
-      return new Failure("transaction not found")
+      return new Failure("Transaction not found")
+    }
+    const updatedPayment = await this.paymentService.updatePaymentStatus(transaction.value.payment[0],status)
+    if(updatedPayment.isFailure()){
+      return new Failure("Payment not found")
+    }
+    if(status === "APPROVED"){
+      const customer = transaction.value.customer;
+      const transactionDetails = transaction.value.detail
+      const order = await this.orderService.createOrder(customer,transactionDetails)
+      if(order.isFailure()){
+        return new Failure("Failed to create order")
+      }
+      const detailsInfo = transactionDetails.map(detail => {
+        return {
+          product: detail.product, 
+          quantity: detail.quantity
+
+        }
+      })
+      const updatedStock = await this.productsService.updateStock(detailsInfo)
+      if(updatedStock.isFailure()){
+        return new Failure(updatedStock.error)
+      }
+
+    }
+    else{
+      return new Failure("Failed to pay")
     }
 
-    const payment = await this.paymentService.updatePaymentStatus((await transaction.value).payment,status)
-    if(payment.isFailure()){
-      return new Failure("payment not found")
-    }
+    return new Success("Order created succesfully");
   }
 
-  
+  async getTransaction(ref: string){
+    return await this.transactionService.getTransactionByRef(ref)
+  }
 
 }

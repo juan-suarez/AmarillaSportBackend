@@ -1,9 +1,6 @@
 import { IsDate, IsNotEmpty, IsNumber, IsObject, IsString } from "class-validator";
 
 export class ProductDto {
-    @IsNumber()
-    @IsNotEmpty()
-    readonly id: number;
 
     @IsString()
     @IsNotEmpty()
@@ -20,8 +17,8 @@ export class ProductDto {
     @IsNumber()
     @IsNotEmpty()
     readonly stock: number;
-  
-    @IsDate()
+
+    @IsString()
     @IsNotEmpty()
-    readonly createdAt: Date;
+    readonly imageUrl: string;
   }

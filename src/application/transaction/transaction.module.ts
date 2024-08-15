@@ -14,14 +14,16 @@ import { productService } from 'src/domain/product/product.service';
 import { TransactionDetailService } from 'src/domain/transaction/transaction-detail.service';
 import { Product } from 'src/domain/product/product.entity';
 import { TransactionDetail } from 'src/domain/transaction/transaction-detail.entity';
+import { Order } from 'src/domain/order/order.entity';
+import { OrderService } from 'src/domain/order/order.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Customer,Transaction, Payment,TransactionDetail, Product]),
+    TypeOrmModule.forFeature([Customer,Transaction, Payment,TransactionDetail, Product, Order]),
     HttpModule
   ],
-  providers: [TransactionService, CustomerService, TransactionOrchestrator,BankService, paymentService, productService, TransactionDetailService],
-  exports: [TransactionService, CustomerService, TransactionOrchestrator,BankService,paymentService, productService,TransactionDetailService ],
+  providers: [TransactionService, CustomerService, TransactionOrchestrator,BankService, paymentService, productService, TransactionDetailService ,OrderService],
+  exports: [TransactionService, CustomerService, TransactionOrchestrator,BankService,paymentService, productService,TransactionDetailService,OrderService],
   controllers : [TransactionController]
 })
 export class TransactionModule {}

@@ -14,7 +14,7 @@ export class Payment {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @ManyToOne(() => Transaction, { onDelete: 'CASCADE' , cascade: true })
+  @ManyToOne(Type => Transaction, transaction => transaction.payment)
   @JoinColumn({name:'transaction_id'})
   transaction: Transaction;
 

@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Request, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Request, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { CreateTransactionDto } from 'src/application/transaction/transaction.dto';
 import { TransactionOrchestrator } from 'src/application/transaction/transaction.service';
 import { AuthGuard } from 'src/infraestructure/utils/auth.guard';
@@ -8,7 +8,7 @@ import { AuthGuard } from 'src/infraestructure/utils/auth.guard';
 export class TransactionController {
 
     constructor(
-        private readonly transactionOrhestrator: TransactionOrchestrator
+        private readonly transactionOrhestrator: TransactionOrchestrator,
     ){}
 
     @Post('')
@@ -20,7 +20,14 @@ export class TransactionController {
     }
 
     @Post('webhook')
-    async webHook(){
+    async webHook(@Body() payload){
+        const { reference, status, id, customer_email } = payload.data[0]
 
+        return await this.transactionOrhestrator.confirmTransaction(reference,status)
+    }
+    
+    @Get()
+    async get(@Query('ref') ref){
+        return await this.transactionOrhestrator.getTransaction(ref);
     }
 }

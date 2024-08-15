@@ -67,6 +67,19 @@ export class TransactionDetailService {
     return await this.transactionService.getTransactions();
   }
 
+  async getTransactionDetailsByTransactionId(transactionId){
+    const transaction = await this.transactionService.getTransaction(transactionId)
+    if(transaction.isFailure()){
+      return new Failure("transaction not found")
+    }
+    try {
+      const transactionDetails = await this.transactionDetailRepository.findBy({transaction: transaction.value})
+      return new Success(transactionDetails)
+    } catch (error) {
+      
+    }
+  }
+
   private mapToDto(transactionDetail: TransactionDetail): TransactionDetailDto {
     return {
       id: transactionDetail.id,

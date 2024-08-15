@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { Transaction } from './transaction.entity';
 import { Product } from '../product/product.entity';
+import { Order } from '../order/order.entity';
 
 @Entity()
 export class TransactionDetail {
@@ -22,9 +23,13 @@ export class TransactionDetail {
   @JoinColumn({name:'transaction_id'})
   transaction: Transaction;
 
-  @OneToOne(Type => Product, product => product.detail) // onUpdate can be used for a real-time price product update
+  @ManyToOne(Type => Product, product => product.detail) // onUpdate can be used for a real-time price product update
   @JoinColumn({name:'product_id'})
   product: Product;
+
+  @ManyToOne(Type => Order, order => order.transaction_details, { nullable: true })
+  @JoinColumn({name:'Order_id'})
+  order: Transaction;
 
   @CreateDateColumn()
   created_at: Date;

@@ -30,8 +30,8 @@ export class CustomerService {
   }
 
   async getCustomerByEmail(email: string): Promise<Result<Customer, string>> {
-    const customer = await this.customerRepository.findOne({ where: { email } });
-
+    const customer = await this.customerRepository.findOne({ where: { email }});
+    
     if (!customer) {
       return new Failure(`Customer with ID ${email} not found`);
     }
