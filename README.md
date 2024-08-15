@@ -49,4 +49,4 @@ https://dbdiagram.io/d/amarilla-datbase-model-66bac70e8b4bb5230eefc53e
 3. login in `@GET localhost:3000/auth/login`
 4. now you can use the other endpoints, no need auth data in request, all is handled with cookies. login session expires in 1 hour.
 
-use this  json postamn collection
+use this  [json postamn collection](https://github.com/juan-suarez/AmarillaSportBackend/blob/main/AmarillaSport.postman_collection.json)
