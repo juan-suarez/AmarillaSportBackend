@@ -1,0 +1,217 @@
+{
+	"info": {
+		"_postman_id": "b7502514-5571-45c9-9be7-61d3e70b2fc1",
+		"name": "AmarillaSport",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21161496"
+	},
+	"item": [
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "getProducts",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/products",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createProducts",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/products",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Transactions",
+			"item": [
+				{
+					"name": "transaction",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"baseFee\": 500,\n    \"deliveryFee\": 500,\n    \"totalAmount\" : 3000000,\n    \"installments\": 2,\n    \"cardDetails\": {\n        \"number\": \"4242424242424242\",\n        \"cvc\": \"789\",\n        \"exp_month\": \"12\",\n        \"exp_year\": \"27\",\n        \"card_holder\": \"Pedro Pérez\"\n    },\n    \"shippingAddressDetails\": {\n        \"address_line_1\": \"cll88\",\n        \"country\": \"CO\",\n        \"region\": \"risaralda\",\n        \"city\" : \"pereira\",\n        \"phone_number\": \"3233532121\"\n    },\n    \"shoppingCartProdcuts\": [\n        {\n            \"id\": 4,\n            \"name\": \"Roma\",\n            \"description\": \"Enterizo deportivo\",\n            \"price\": \"60000.5\",\n            \"quantity\": 1\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/transaction",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"transaction"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "webhook",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"data\": [\n        {\n            \"id\": \"15113-1723667936-31889\",\n            \"created_at\": \"2024-08-14T20:38:57.016Z\",\n            \"finalized_at\": \"2024-08-14T20:38:57.603Z\",\n            \"amount_in_cents\": 3000000,\n            \"reference\": \"3f145dbe-11fa-4789-b85a-1a0857909ed1\",\n            \"customer_email\": \"juan@suarez.com\",\n            \"currency\": \"COP\",\n            \"payment_method_type\": \"CARD\",\n            \"payment_method\": {\n                \"type\": \"CARD\",\n                \"extra\": {\n                    \"bin\": \"424242\",\n                    \"name\": \"VISA-4242\",\n                    \"brand\": \"VISA\",\n                    \"exp_year\": \"27\",\n                    \"card_type\": \"CREDIT\",\n                    \"exp_month\": \"12\",\n                    \"last_four\": \"4242\",\n                    \"card_holder\": \"Pedro Pérez\",\n                    \"is_three_ds\": false,\n                    \"unique_code\": \"8482748a7e81f67e29569f18c9aa5fee315998be39bbc3717f62112ddbb77497\",\n                    \"three_ds_auth\": {\n                        \"three_ds_auth\": {\n                            \"current_step\": \"AUTHENTICATION\",\n                            \"current_step_status\": \"COMPLETED\"\n                        }\n                    },\n                    \"external_identifier\": \"NtMxZdop5V\",\n                    \"processor_response_code\": \"00\"\n                },\n                \"token\": \"tok_stagtest_5113_fcf8f9229742Be2E1072Ad6e131CbbA4\",\n                \"installments\": 2\n            },\n            \"status\": \"APPROVED\",\n            \"status_message\": null,\n            \"shipping_address\": {\n                \"address_line_1\": \"cll88\",\n                \"country\": \"CO\",\n                \"region\": \"risaralda\",\n                \"city\": \"pereira\",\n                \"phone_number\": \"3233532121\"\n            },\n            \"redirect_url\": null,\n            \"payment_source_id\": null,\n            \"payment_link_id\": null,\n            \"customer_data\": null,\n            \"billing_data\": null\n        }\n    ],\n    \"meta\": {}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/transaction/webhook",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"transaction",
+								"webhook"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "transaction",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/transaction?ref=3f145dbe-11fa-4789-b85a-1a0857909ed1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"transaction"
+							],
+							"query": [
+								{
+									"key": "ref",
+									"value": "3f145dbe-11fa-4789-b85a-1a0857909ed1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"juan@suarez.com\",\n    \"password\": \"juan123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/auth/login",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sign-up",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"testing\",\n    \"lastName\": \"user\",\n    \"email\": \"testing@User.com\",\n    \"password\": \"testin123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/auth/sign-up",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"sign-up"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
