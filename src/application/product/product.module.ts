@@ -9,10 +9,15 @@ import { ProductsController } from 'src/infraestructure/adapters/controllers/pro
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Product, TransactionDetail, Transaction, Customer]),
+    TypeOrmModule.forFeature([
+      Product,
+      TransactionDetail,
+      Transaction,
+      Customer,
+    ]),
   ],
   controllers: [ProductsController],
-  providers: [productService ],
-  exports: [productService ]
+  providers: [productService],
+  exports: [productService],
 })
 export class ProductModule {}

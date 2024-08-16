@@ -8,9 +8,7 @@ import { CustomerService } from 'src/domain/customer/customer.service';
 import { TransactionService } from 'src/domain/transaction/transaction.service';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Payment, Transaction, Customer])
-  ],
+  imports: [TypeOrmModule.forFeature([Payment, Transaction, Customer])],
   providers: [paymentService, TransactionService, CustomerService],
   exports: [paymentService, TransactionService, CustomerService],
 })

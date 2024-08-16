@@ -33,14 +33,17 @@ export class Transaction {
   @Column({ type: 'varchar' })
   status: string;
 
-  @ManyToOne(Type => Customer, (customer) => customer.transactions)
-  @JoinColumn({ name: 'customer_id'})
+  @ManyToOne((Type) => Customer, (customer) => customer.transactions)
+  @JoinColumn({ name: 'customer_id' })
   customer: Customer;
 
-  @OneToMany(Type => TransactionDetail, transactionDetails => transactionDetails.transaction)
+  @OneToMany(
+    (Type) => TransactionDetail,
+    (transactionDetails) => transactionDetails.transaction,
+  )
   detail: TransactionDetail[];
 
-  @OneToMany(Type => Payment, payment => payment.transaction) // should be an OneToMany if we can retry the payment
+  @OneToMany((Type) => Payment, (payment) => payment.transaction) // should be an OneToMany if we can retry the payment
   payment: Payment[];
 
   @CreateDateColumn()

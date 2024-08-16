@@ -19,11 +19,36 @@ import { OrderService } from 'src/domain/order/order.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Customer,Transaction, Payment,TransactionDetail, Product, Order]),
-    HttpModule
+    TypeOrmModule.forFeature([
+      Customer,
+      Transaction,
+      Payment,
+      TransactionDetail,
+      Product,
+      Order,
+    ]),
+    HttpModule,
   ],
-  providers: [TransactionService, CustomerService, TransactionOrchestrator,BankService, paymentService, productService, TransactionDetailService ,OrderService],
-  exports: [TransactionService, CustomerService, TransactionOrchestrator,BankService,paymentService, productService,TransactionDetailService,OrderService],
-  controllers : [TransactionController]
+  providers: [
+    TransactionService,
+    CustomerService,
+    TransactionOrchestrator,
+    BankService,
+    paymentService,
+    productService,
+    TransactionDetailService,
+    OrderService,
+  ],
+  exports: [
+    TransactionService,
+    CustomerService,
+    TransactionOrchestrator,
+    BankService,
+    paymentService,
+    productService,
+    TransactionDetailService,
+    OrderService,
+  ],
+  controllers: [TransactionController],
 })
 export class TransactionModule {}

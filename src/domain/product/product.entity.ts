@@ -26,10 +26,13 @@ export class Product {
   @Column('int')
   stock: number;
 
-  @OneToMany(Type => TransactionDetail, transactionDetail => transactionDetail.product )
-  detail: TransactionDetail
+  @OneToMany(
+    (Type) => TransactionDetail,
+    (transactionDetail) => transactionDetail.product,
+  )
+  detail: TransactionDetail;
 
-  @Column('text', {nullable:true})
+  @Column('text', { nullable: true })
   image_url: string;
 
   @CreateDateColumn()

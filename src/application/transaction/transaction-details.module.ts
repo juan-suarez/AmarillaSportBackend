@@ -8,12 +8,16 @@ import { CustomerService } from 'src/domain/customer/customer.service';
 import { Customer } from 'src/domain/customer/customer.entity';
 import { TransactionService } from 'src/domain/transaction/transaction.service';
 
-
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Customer, TransactionDetail, Product, Transaction]),
+    TypeOrmModule.forFeature([
+      Customer,
+      TransactionDetail,
+      Product,
+      Transaction,
+    ]),
   ],
-  providers: [TransactionDetailService,TransactionService, CustomerService],
+  providers: [TransactionDetailService, TransactionService, CustomerService],
   exports: [TransactionDetailService, TransactionService, CustomerService],
 })
 export class TransactionDetailModule {}

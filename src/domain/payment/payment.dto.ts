@@ -1,7 +1,6 @@
-import { Transaction } from "../transaction/transaction.entity";
+import { Transaction } from '../transaction/transaction.entity';
 
 export class PaymentDto {
-
   readonly id?: number;
 
   readonly paymentMethod: string;

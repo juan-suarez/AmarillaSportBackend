@@ -11,7 +11,6 @@ export class paymentService {
   constructor(
     @InjectRepository(Payment)
     private readonly paymentRepository: Repository<Payment>,
-    @Inject() private readonly transactionService: TransactionService 
   ) {}
 
   async getPayment(id: number): Promise<Result<PaymentDto, string>> {
@@ -22,34 +21,39 @@ export class paymentService {
     }
 
     return new Success(this.mapToDto(payment));
-
   }
 
-  async createPayment( payment ): Promise<Result<PaymentDto, string>> {
+  async createPayment(payment): Promise<Result<PaymentDto, string>> {
     try {
       const paymentPayload = {
         transaction: payment.transaction,
         payment_method: payment.paymentMethod,
         status: payment.status,
-        bank_transaction_number: payment.bankTransactionNumber
-      }
+        bank_transaction_number: payment.bankTransactionNumber,
+      };
       const newPayment = this.paymentRepository.create(paymentPayload);
 
-      return new Success( this.mapToDto(await this.paymentRepository.save(newPayment)));
+      return new Success(
+        this.mapToDto(await this.paymentRepository.save(newPayment)),
+      );
     } catch (error) {
-      console.error("error");
-      return new Failure('Failed to create the payment');
+      console.error('error');
+      return new Failure('Failed to create payment');
     }
-
   }
 
-  async updatePaymentStatus(payment: Payment , newStatus: string): Promise<Result<PaymentDto,string>>{
+  async updatePaymentStatus(
+    payment: Payment,
+    newStatus: string,
+  ): Promise<Result<PaymentDto, string>> {
     payment.status = newStatus;
 
     try {
-      return new Success(this.mapToDto(await this.paymentRepository.save(payment)));
+      return new Success(
+        this.mapToDto(await this.paymentRepository.save(payment)),
+      );
     } catch (error) {
-      return new Failure("Error updating payment status")
+      return new Failure('Error updating payment status');
     }
   }
 

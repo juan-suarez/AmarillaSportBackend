@@ -11,56 +11,74 @@ import { TransactionDetailDto } from './transaction-detail.dto';
 @Injectable()
 export class TransactionDetailService {
   constructor(
-    @InjectRepository(TransactionDetail) private readonly transactionDetailRepository: Repository<TransactionDetail>,
-    @Inject() private readonly transactionService: TransactionService 
+    @InjectRepository(TransactionDetail)
+    private readonly transactionDetailRepository: Repository<TransactionDetail>,
+    @Inject() private readonly transactionService: TransactionService,
   ) {}
 
-  async getTransactionDetail(id: number): Promise<Result<TransactionDetailDto, string>> {
-    const transactionDetail = await this.transactionDetailRepository.findOne({ where: { id } });
+  async getTransactionDetail(
+    id: number,
+  ): Promise<Result<TransactionDetailDto, string>> {
+    const transactionDetail = await this.transactionDetailRepository.findOne({
+      where: { id },
+    });
 
     if (!transactionDetail) {
       return new Failure(`TransactionDetail with ID ${id} not found`);
     }
 
     return new Success(this.mapToDto(transactionDetail));
-
   }
 
-  async createTransactionDetail({ transaction, quantity}: TransactionDetailDto): Promise<Result<TransactionDetailDto, string>> {
+  async createTransactionDetail({
+    transaction,
+    quantity,
+  }: TransactionDetailDto): Promise<Result<TransactionDetail, string>> {
     try {
       const transactionDetail = {
         transaction,
-        quantity 
-      }
-      const newTransactionDetail = this.transactionDetailRepository.create(transactionDetail);
+        quantity,
+      };
+      const newTransactionDetail =
+        this.transactionDetailRepository.create(transactionDetail);
 
-      return new Success( await this.transactionDetailRepository.save(newTransactionDetail));
+      return new Success(
+        await this.transactionDetailRepository.save(newTransactionDetail),
+      );
     } catch (error) {
       console.error(error);
-      return new Failure('Failed to create TransactionDEtail');
+      return new Failure('Failed to create TransactionDetail');
     }
-
   }
 
-  async createTransactionDetails(products: Product[], transaction: Transaction, quantities: number[]): Promise<Result<TransactionDetail[],string>> {
-    const transactionDetailsPayload: TransactionDetail[] = products.map((product,index) => {
-      const transactionDetail = new TransactionDetail()
-      transactionDetail.quantity = quantities[index];
-      transactionDetail.product = product;
-      transactionDetail.transaction = transaction
+  async createTransactionDetails(
+    products: Product[],
+    transaction: Transaction,
+    quantities: number[],
+  ): Promise<Result<TransactionDetail[], string>> {
+    const transactionDetailsPayload: TransactionDetail[] = products.map(
+      (product, index) => {
+        const transactionDetail = new TransactionDetail();
+        transactionDetail.quantity = quantities[index];
+        transactionDetail.product = product;
+        transactionDetail.transaction = transaction;
 
-      return transactionDetail
-    });
+        return transactionDetail;
+      },
+    );
 
     try {
-      const transactionDetails = await this.transactionDetailRepository.create(transactionDetailsPayload) as TransactionDetail[]
+      const transactionDetails = (await this.transactionDetailRepository.create(
+        transactionDetailsPayload,
+      )) as TransactionDetail[];
 
-      return new Success( await this.transactionDetailRepository.save(transactionDetails) );
+      return new Success(
+        await this.transactionDetailRepository.save(transactionDetails),
+      );
     } catch (error) {
-      console.error(error)
-      return new Failure("Error creating transaction details")
+      console.error(error);
+      return new Failure('Error creating transaction details');
     }
-
   }
 
   private mapToDto(transactionDetail: TransactionDetail): TransactionDetailDto {
@@ -69,7 +87,7 @@ export class TransactionDetailService {
       quantity: transactionDetail.quantity,
       transaction: transactionDetail.transaction,
       order: transactionDetail.order,
-      product: transactionDetail.product
+      product: transactionDetail.product,
     };
   }
 }

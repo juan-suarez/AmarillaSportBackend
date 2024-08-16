@@ -9,7 +9,13 @@ import { Payment } from 'src/domain/payment/payment.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Customer,Transaction, TransactionDetail, Product, Payment]),
+    TypeOrmModule.forFeature([
+      Customer,
+      Transaction,
+      TransactionDetail,
+      Product,
+      Payment,
+    ]),
   ],
   providers: [CustomerService],
   exports: [CustomerService],

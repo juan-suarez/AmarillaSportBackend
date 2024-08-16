@@ -1,9 +1,8 @@
-import { Customer } from "../customer/customer.entity";
-import { Payment } from "../payment/payment.entity";
-import { TransactionDetail } from "../transaction-details/transaction-detail.entity";
+import { Customer } from '../customer/customer.entity';
+import { Payment } from '../payment/payment.entity';
+import { TransactionDetail } from '../transaction-details/transaction-detail.entity';
 
 export class TransactionDto {
-
   readonly id?: number;
 
   readonly transactionNumber: string;
@@ -16,9 +15,9 @@ export class TransactionDto {
 
   readonly status: string;
 
-  readonly customer?: Customer
+  readonly customer?: Customer;
 
-  transactionDetails?: TransactionDetail[]
+  transactionDetails?: TransactionDetail[];
 
-  payments?: Payment[]
+  payments?: Payment[];
 }

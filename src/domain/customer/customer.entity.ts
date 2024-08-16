@@ -22,16 +22,15 @@ export class Customer {
   @Column({ type: 'varchar' })
   email: string;
 
-  @Column({ type: 'varchar', nullable: true})
+  @Column({ type: 'varchar', nullable: true })
   password: string;
 
-  @OneToMany(Type => Transaction, transaction => transaction.customer)
+  @OneToMany((Type) => Transaction, (transaction) => transaction.customer)
   transactions: Transaction[];
 
-  @OneToMany(Type => Order, order => order.customer )
-  orders: Order[]
+  @OneToMany((Type) => Order, (order) => order.customer)
+  orders: Order[];
 
   @CreateDateColumn()
   created_at: Date;
 }
-

@@ -18,7 +18,6 @@ import { JwtModule } from '@nestjs/jwt';
 import { Order } from 'src/domain/order/order.entity';
 import { OrderModule } from 'src/application/order/order.module';
 
-
 @Module({
   imports: [
     //this must be refactored with a dataBase Module
@@ -29,7 +28,14 @@ import { OrderModule } from 'src/application/order/order.module';
       username: process.env.POSTGRES_USER || 'user',
       password: process.env.POSTGRES_PASSWORD || 'password',
       database: process.env.POSTGRES_DB || 'app',
-      entities:[Customer, Product, Transaction, TransactionDetail, Payment, Order],
+      entities: [
+        Customer,
+        Product,
+        Transaction,
+        TransactionDetail,
+        Payment,
+        Order,
+      ],
       synchronize: true,
     }),
     CustomerModule,
@@ -39,10 +45,10 @@ import { OrderModule } from 'src/application/order/order.module';
     ProductModule,
     OrderModule,
     JwtModule.register({
-      global: true
-    })
+      global: true,
+    }),
   ],
-  controllers: [AppController, AuthController ],
-  providers: [ AppService, AuthService ],
+  controllers: [AppController, AuthController],
+  providers: [AppService, AuthService],
 })
 export class AppModule {}

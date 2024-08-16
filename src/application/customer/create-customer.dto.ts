@@ -1,7 +1,13 @@
-import { IsString, IsEmail, IsNotEmpty, IsOptional, IsNumber, IsDate } from 'class-validator';
+import {
+  IsString,
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsNumber,
+  IsDate,
+} from 'class-validator';
 
 export class CreateCustomerDto {
-
   @IsString()
   @IsNotEmpty()
   readonly first_name: string;

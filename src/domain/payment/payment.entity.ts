@@ -14,8 +14,8 @@ export class Payment {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @ManyToOne(Type => Transaction, transaction => transaction.payment)
-  @JoinColumn({name:'transaction_id'})
+  @ManyToOne((Type) => Transaction, (transaction) => transaction.payment)
+  @JoinColumn({ name: 'transaction_id' })
   transaction: Transaction;
 
   @Column({ length: 50 })

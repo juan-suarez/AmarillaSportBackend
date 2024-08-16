@@ -12,23 +12,24 @@ export class OrderService {
   constructor(
     @InjectRepository(Order)
     private readonly orderRepository: Repository<Order>,
-    private readonly customerService: CustomerService
-  ) { }
+    private readonly customerService: CustomerService,
+  ) {}
 
-
-  async createOrder(customer: Customer, transactionDetails : TransactionDetail[]): Promise<Result<Order,string>>{ //delete all dtos in domain layout
+  async createOrder(
+    customer: Customer,
+    transactionDetails: TransactionDetail[],
+  ): Promise<Result<Order, string>> {
+    //delete all dtos in domain layout
     const orderPayload = {
-      transaction_details:transactionDetails,  
+      transaction_details: transactionDetails,
       customer,
-    }
+    };
     const newOrder = this.orderRepository.create(orderPayload);
-    try{
-      return new Success( await this.orderRepository.save(newOrder));
-    } catch(error) {
+    try {
+      return new Success(await this.orderRepository.save(newOrder));
+    } catch (error) {
       console.error(error);
       return new Failure('Failed to create Order');
     }
-
   }
-
 }

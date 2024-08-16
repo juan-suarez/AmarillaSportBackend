@@ -1,7 +1,6 @@
-import { Transaction } from "../transaction/transaction.entity";
+import { Transaction } from '../transaction/transaction.entity';
 
 export class CustomerDto {
-
   readonly id: number;
 
   readonly firstName: string;
@@ -12,5 +11,5 @@ export class CustomerDto {
 
   readonly password: string;
 
-  transactions: Transaction[];
+  transactions?: Transaction[];
 }

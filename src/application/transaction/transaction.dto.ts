@@ -1,6 +1,16 @@
-import { Type } from "class-transformer";
-import { IsArray, IsDate, IsNotEmpty, isNumber, IsNumber, IsObject, IsOptional, IsString, IsUUID } from "class-validator";
-import { Customer } from "src/domain/customer/customer.entity";
+import { Type } from 'class-transformer';
+import {
+  IsArray,
+  IsDate,
+  IsNotEmpty,
+  isNumber,
+  IsNumber,
+  IsObject,
+  IsOptional,
+  IsString,
+  IsUUID,
+} from 'class-validator';
+import { Customer } from 'src/domain/customer/customer.entity';
 export class CardDetailsDto {
   @IsString()
   @IsNotEmpty()
@@ -55,7 +65,6 @@ export class shippingAddressDetailsDto {
   @IsString()
   @IsOptional()
   readonly postal_code: string;
-
 }
 export class ShoppingCartProdcutsDto {
   @IsNumber()
@@ -109,5 +118,5 @@ export class CreateTransactionDto {
 
   @IsArray()
   @IsNotEmpty()
-  readonly shopping_cart_prodcuts: ShoppingCartProdcutsDto[]
+  readonly shopping_cart_prodcuts: ShoppingCartProdcutsDto[];
 }

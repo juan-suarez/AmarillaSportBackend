@@ -19,16 +19,20 @@ export class TransactionDetail {
   @Column({ type: 'int' })
   quantity: number;
 
-  @ManyToOne(Type => Transaction, transaction => transaction.detail, { cascade: true })
-  @JoinColumn({name:'transaction_id'})
+  @ManyToOne((Type) => Transaction, (transaction) => transaction.detail, {
+    cascade: true,
+  })
+  @JoinColumn({ name: 'transaction_id' })
   transaction: Transaction;
 
-  @ManyToOne(Type => Product, product => product.detail) // onUpdate can be used for a real-time price product update
-  @JoinColumn({name:'product_id'})
+  @ManyToOne((Type) => Product, (product) => product.detail) // onUpdate can be used for a real-time price product update
+  @JoinColumn({ name: 'product_id' })
   product: Product;
 
-  @ManyToOne(Type => Order, order => order.transaction_details, { nullable: true })
-  @JoinColumn({name:'Order_id'})
+  @ManyToOne((Type) => Order, (order) => order.transaction_details, {
+    nullable: true,
+  })
+  @JoinColumn({ name: 'Order_id' })
   order: Order;
 
   @CreateDateColumn()
