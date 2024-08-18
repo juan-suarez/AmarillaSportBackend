@@ -1,7 +1,7 @@
 import { Inject } from '@nestjs/common';
 import { CustomerService } from 'src/domain/customer/customer.service';
 import { LoginDto } from './adapters/controllers/auth/auth.dto';
-import { Failure } from 'src/utils/result';
+import { Failure, Result, Success } from 'src/utils/result';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { CustomerDto } from 'src/domain/customer/customer.dto';
@@ -12,7 +12,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async login({ email, password }: LoginDto) {
+  async login({ email, password }: LoginDto):Promise<Result<string,string>> {
     const fetchedCustomer =
       await this.customerService.getCustomerByEmail(email);
 
@@ -20,7 +20,7 @@ export class AuthService {
       return new Failure('customer not found');
     }
     const customer = fetchedCustomer.value as CustomerDto;
-    const passwordsAreNotEqual = await bcrypt.compare(
+    const passwordsAreNotEqual =! await bcrypt.compare(
       password,
       customer.password,
     );
@@ -35,9 +35,9 @@ export class AuthService {
       email: customer.email,
     };
 
-    return this.jwtService.signAsync(payload, {
+    return new Success(await this.jwtService.signAsync(payload, {
       secret: 'secreto',
       expiresIn: '60m',
-    });
+    }));
   }
 }

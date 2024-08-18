@@ -27,15 +27,21 @@ export class AuthController {
     @Res({ passthrough: true }) response: Response,
   ) {
     const accessToken = await this.authService.login(loginPayload);
+    if(accessToken.isFailure()){
+      return accessToken.error
+    }
+    
     const millisecondsToAdd = 60 * 60 * 1000;
 
     response
       .cookie('accessToken', accessToken, {
         httpOnly: true,
         secure: false,
+        sameSite: 'strict',
+        path: '/',
         expires: new Date(Date.now() + millisecondsToAdd),
       })
-      .send({ message: 'login successufully' });
+      .send( 'login successufully');
   }
 
   @Delete('log-out')

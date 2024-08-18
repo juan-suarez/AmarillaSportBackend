@@ -52,11 +52,10 @@ export class CustomerService {
   ): Promise<Result<CustomerDto, string>> {
     try {
       const newCustomer = this.customerRepository.create(customer);
-
       newCustomer.password = bcrypt.hashSync(customer.password, 10);
 
       return new Success(
-        this.mapToDto(await this.customerRepository.save(customer)),
+        this.mapToDto(await this.customerRepository.save(newCustomer)),
       );
     } catch (error) {
       console.error(error);

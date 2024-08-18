@@ -22,5 +22,5 @@ export class CreateCustomerDto {
 
   @IsString()
   @IsNotEmpty()
-  readonly password: string;
+  password: string;
 }
