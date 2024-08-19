@@ -32,13 +32,11 @@ export class AuthController {
     }
     
     const millisecondsToAdd = 60 * 60 * 1000;
-
+    console.log(accessToken)
     response
       .cookie('accessToken', accessToken, {
         httpOnly: true,
         secure: false,
-        sameSite: 'strict',
-        path: '/',
         expires: new Date(Date.now() + millisecondsToAdd),
       })
       .send( 'login successufully');
